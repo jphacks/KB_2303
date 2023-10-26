@@ -1,24 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from './'
+import { Hoge } from './';
+
 
 const meta = {
-  title: 'Components/Button',
-  component: Button,
+  title: 'Components/Hoge',
+  component: Hoge,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {
-    backgroundColor: { control: 'color' },
   },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof Hoge>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Large: Story = {
+export const Default: Story = {
   args: {
-    backgroundColor: 'blue',
   },
 }

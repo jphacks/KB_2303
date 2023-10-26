@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  client:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./client:/app
+    ports:
+      - 5173:5173
+    command: npm run dev
+  sb:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./client:/app
+    ports:
+      - 6006:6006
+    command: npm run storybook

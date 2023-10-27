@@ -17,3 +17,7 @@ jobs:
           script: |
             cd this-code
             git pull origin develop
+            make build
+            make down
+            make up
+            make migrate

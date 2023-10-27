@@ -20,6 +20,7 @@ jobs:
             cd this-code
             git pull origin develop
             make build
+            make install
             make down
             make up
             make migrate

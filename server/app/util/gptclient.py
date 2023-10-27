@@ -26,9 +26,12 @@ def gptchatjson(json=None,text=None):
   return gptclient(json,text)
 
 if __name__ == "__main__":
-  requestjson=[{"role": "system", "content": "あなたは気さくな上司として部下のプログラマーの進捗を確認してください。定期報告を提出するように求めます。文字数は150文字以内で"}]
+  requestjson=[{"role": "system", "content": "あなたは気さくな上司として一人の部下のプログラマーの進捗を確認してください。定期報告を提出するように求めます。ただしあなたは教育係の代理の窓口なので、何らかの個別対応をするときは約束はせずにメッセージを担当者に取り次ぎます。文字数は150文字以内で"}]
   print(gptchat(json=requestjson))
-
+  requestjson=[{"role": "system", "content": "あなたは気さくな上司として一人の部下のプログラマーの進捗を確認してください。定期報告を提出するように求めます。ただしあなたは教育係の代理の窓口なので、何らかの個別対応をするときは約束はせずにメッセージを担当者に取り次ぐと伝えてください。文字数は150文字以内で。担当者への取次が必要だと判断した場合必ず文字列の先頭に\"helprequire\"と入れてください"},
+               {"role": "user", "content": "はい、わかりました。今日は予定通り教材の３章と４章を学習し、演習問題を解きました。ただjavaのクラスの概念がうまく掴めていない気がします"}]
+  print("ユーザー: "+ requestjson[1]["content"])
+  print("自動応答: "+gptchat(json=requestjson))
 #gptに渡すメッセージの構造について
 #role: system or user
 #content: メッセージの内容

@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from routers import root, sample
+from routers import root, sample, line
 from util.env import get_env
 
 # logger config
@@ -33,4 +33,7 @@ app.include_router(
 )
 app.include_router(
     sample.router
+)
+app.include_router(
+    line.router
 )

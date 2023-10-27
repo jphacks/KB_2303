@@ -18,6 +18,9 @@ from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent
 )
+from linebot.models import (
+    TextSendMessage
+)
 
 # define router
 router = APIRouter(
@@ -57,17 +60,30 @@ async def handle_callback(request: Request):
     except InvalidSignatureError:
         raise HTTPException(status_code=400, detail="Invalid signature")
 
-    for event in events:
-        if not isinstance(event, MessageEvent):
+    for ev in events:
+        if not isinstance(ev, MessageEvent):
             continue
-        if not isinstance(event.message, TextMessageContent):
+        if not isinstance(ev.message, TextMessageContent):
             continue
 
         await line_bot_api.reply_message(
             ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[TextMessage(text=event.message.text)]
+                reply_token=ev.reply_token,
+                messages=[TextMessage(text=ev.message.text)]
             )
         )
+
+        # 友達追加されたとき
+        if ev.type == "follow":
+            while ev.message.text != "はじめる":
+                line_bot_api.reply_message(
+                    ev.reply_token,
+                    TextSendMessage(text="「はじめる」と送ってください")
+                )
+            else:
+                line_bot_api.reply_message(
+                    ev.reply_token,
+                    TextSendMessage(text="success")
+                )
 
     return 'OK'

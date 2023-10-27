@@ -20,13 +20,14 @@ def gptclient(json=None,text=None):
   return completion
 #返答をテキストとして返す
 def gptchat(json=None,text=None):
-  return gptclient(json,text).choices[0].content
+  return gptclient(json,text).choices[0].message.content
 #返答をそのままの構造で返す
 def gptchatjson(json=None,text=None):
   return gptclient(json,text)
 
 if __name__ == "__main__":
-  print(gptchat())
+  requestjson=[{"role": "system", "content": "あなたは気さくな上司として部下のプログラマーの進捗を確認してください。定期報告を提出するように求めます。文字数は150文字以内で"}]
+  print(gptchat(json=requestjson))
 
 #gptに渡すメッセージの構造について
 #role: system or user

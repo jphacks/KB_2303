@@ -6,6 +6,10 @@ from sqlalchemy.orm import Session
 from .. import models, schemas
 
 
+def get(db: Session, group_id: int) -> models.Group | None:
+    return db.query(models.Group).filter(models.Group.id == group_id).first()
+
+
 def get_by_admin(db: Session, admin: models.Admin) -> models.Group | None:
     res = db.query(models.GroupAdmin).filter(models.GroupAdmin.admin_id == admin.id).first()
 

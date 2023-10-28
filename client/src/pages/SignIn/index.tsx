@@ -3,7 +3,7 @@ import { Input } from '../../components/Input'
 import { Root } from './Styles'
 import { Button } from '../../components/Button'
 
-const apiEndPoint = 'https://server.thiscode.proj.ukwhatn.com/api'
+const apiEndPoint = 'https://api.thiscode.proj.ukwhatn.com/api'
 
 const Page: React.FC = () => {
   const [mail, setMail] = useState('')

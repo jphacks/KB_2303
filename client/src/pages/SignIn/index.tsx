@@ -1,17 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '../../components/Input'
 import { Root } from './Styles'
 import { Button } from '../../components/Button'
-
-const apiEndPoint = 'https://api.thiscode.proj.ukwhatn.com/api'
+import { Config } from '../../utils/Config'
 
 const Page: React.FC = () => {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
 
+  useEffect(() => {
+    fetch(`${Config.ApiEndPoint}/admin/`, {
+      headers: {
+        accept: 'application/json',
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log({ data })
+      })
+      .catch(console.error)
+  }, [])
+
   const signIn = () => {
     console.log('sign-in')
-    fetch(`${apiEndPoint}/session/`, {
+    fetch(`${Config.ApiEndPoint}/session/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

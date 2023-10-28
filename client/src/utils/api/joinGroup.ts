@@ -2,6 +2,7 @@ import { Config } from '../Config'
 
 export const joinGroup = (invitationCode: string) => {
   return fetch(`${Config.ApiEndPoint}/group/join/`, {
+    credentials: 'include',
     method: 'POST',
     headers: {
       accept: 'application/json',

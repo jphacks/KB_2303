@@ -1,10 +1,5 @@
 import { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react'
-import {
-  BrowserRouter,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Router } from './utils/Router'
 import { Result } from 'result-type-ts'
 import { Grid } from 'react-loader-spinner'

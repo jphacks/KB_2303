@@ -140,7 +140,7 @@ async def handle_callback(
         )
 
 
-def send_mentoring_start_messages():
+async def send_mentoring_start_messages():
     with SessionLocal() as db:
         reports = report_crud.get_need_to_process_scheduled_reports(db)
 
@@ -149,7 +149,7 @@ def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
-            line_bot_api.push_message(
+            await line_bot_api.push_message(
                 PushMessageRequest(
                     to=line_id,
                     messages=[
@@ -167,5 +167,5 @@ def send_mentoring_start_messages():
 @router.on_event("startup")
 async def startup():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(send_mentoring_start_messages, 'interval', minutes=1)
+    scheduler.add_job(send_mentoring_start_messages, 'interval', seconds=3)
     scheduler.start()

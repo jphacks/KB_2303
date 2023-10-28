@@ -14,7 +14,24 @@ from routers.line.util.session import (
     set_saved_data,
     delete_saved_data
 )
+from ..data import MENTORS
 from ..data.base import MentorBase
+
+
+def confirm_data(saved_data: LINECommunicationStateSchema):
+    return "\n".join([
+        f'氏名:',
+        {saved_data.data["name"]},
+        "",
+        f'目標:',
+        {saved_data.data["goal"]},
+        "",
+        f'メンタリングの頻度:',
+        f'{saved_data.data["interval_days"]}日に1回',
+        "",
+        f'{saved_data.data["interval_days"]}日後までの目標:',
+        {saved_data.data["target"]}
+    ])
 
 
 def registration_controller(
@@ -122,6 +139,8 @@ def registration_controller(
                     text=mentor.RESPONSE_REQUEST_SELECT
                 ))
             else:
+                mentor = MENTORS[int(input_text)]
+
                 # 挨拶
                 reply_message_list.append(TextMessage(
                     text=mentor.RESPONSE_GREETING
@@ -212,15 +231,10 @@ def registration_controller(
                 saved_data.data["target"] = input_text
 
                 # 登録内容を確認
-                reply_text = "\n".join([
-                    f'氏名: {saved_data.data["name"]}',
-                    f'目標: {saved_data.data["goal"]}',
-                    f'メンタリングの頻度: {saved_data.data["interval_days"]}',
-                    f'{saved_data.data["interval_days"]}日後までの目標: {saved_data.data["target"]}'
-                ])
+
                 reply_text_build = mentor.build(
                     mentor.RESPONSE_CONFIRM_REGISTRATION,
-                    {"DATA": reply_text}
+                    {"DATA": confirm_data(saved_data)}
                 )
                 reply_message_list.append(TemplateMessage(
                     alt_text=reply_text_build,
@@ -318,15 +332,9 @@ def registration_controller(
                 saved_data.state = STATUS.CONFIRM_REGISTRATION.name
 
                 # 登録内容を確認
-                reply_text = "\n".join([
-                    f'氏名: {saved_data.data["name"]}',
-                    f'目標: {saved_data.data["goal"]}',
-                    f'メンタリングの頻度: {saved_data.data["interval_days"]}',
-                    f'{saved_data.data["interval_days"]}日後までの目標: {saved_data.data["target"]}'
-                ])
                 reply_text_build = mentor.build(
                     mentor.RESPONSE_CONFIRM_REGISTRATION,
-                    {"DATA": reply_text}
+                    {"DATA": confirm_data(saved_data)}
                 )
                 reply_message_list.append(TemplateMessage(
                     alt_text=reply_text_build,

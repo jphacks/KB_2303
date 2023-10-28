@@ -25,6 +25,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     fetchGroup().then((data) => {
+      console.log('group', data)
       const g = {
         id: data.id,
         name: data.name,
@@ -35,6 +36,7 @@ const Page: React.FC = () => {
       setGroup(Result.success(g))
     })
     fetchGroupUsers().then((data) => {
+      console.log('group users', data)
       const d = data.map((u: any) => {
         return {
           id: u.id,

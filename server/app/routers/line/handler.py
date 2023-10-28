@@ -21,6 +21,7 @@ from linebot.v3.webhooks import (
 )
 
 from crud.schemas import LINECommunicationStateSchema
+from db.connection import SessionLocal
 from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
 from .controller.registration import registration_controller
@@ -140,7 +141,7 @@ async def handle_callback(
 
 
 def send_mentoring_start_messages():
-    with get_db() as db:
+    with SessionLocal() as db:
         reports = report_crud.get_need_to_process_scheduled_reports(db)
 
     for report in reports:

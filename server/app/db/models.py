@@ -62,6 +62,8 @@ class User(Base):
     line_id = Column(String, unique=True, index=True)
 
     group_users: Mapped["GroupUser"] = relationship(back_populates="user")
+    reports: Mapped[list["Report"]] = relationship(back_populates="user")
+    config: Mapped["UserConfig"] = relationship(back_populates="user")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
@@ -72,6 +74,7 @@ class UserConfig(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.id"), index=True, unique=True)
+    user = relationship("User", back_populates="config")
 
     interval_days = Column(Integer, nullable=False)
 
@@ -117,6 +120,8 @@ class Report(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.id"), index=True)
+
+    user = relationship("User", back_populates="reports")
 
     no = Column(Integer, nullable=False)
 

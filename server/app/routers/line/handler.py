@@ -1,6 +1,7 @@
 import os
 import sys
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import Request, APIRouter, HTTPException, Depends
 from linebot.v3.exceptions import (
     InvalidSignatureError
@@ -20,10 +21,10 @@ from linebot.v3.webhooks import (
 )
 
 from crud.schemas import LINECommunicationStateSchema
-from .data import MENTORS
-from db.crud import user as user_crud
+from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
 from .controller.registration import registration_controller
+from .data import MENTORS
 from .util.session import get_saved_data, delete_saved_data
 
 # define router
@@ -136,3 +137,30 @@ async def handle_callback(
                 messages=reply_message_list
             )
         )
+
+
+def send_mentoring_start_messages(db=Depends(get_db)):
+    reports = report_crud.get_need_to_process_scheduled_reports(db)
+
+    for report in reports:
+        user = report.user
+        line_id = user.line_id
+        mentor = MENTORS[user.config.mentor_id]
+        line_bot_api.push_message(
+            user_id=line_id,
+            messages=[
+                TextMessage(
+                    text=mentor.RESPONSE_PUSH_START
+                ),
+                TextMessage(
+                    text=mentor.RESPONSE_PUSH_HEARING
+                )
+            ]
+        )
+
+
+@router.on_event("startup")
+async def startup():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(send_mentoring_start_messages, 'interval', minutes=1)
+    scheduler.start()

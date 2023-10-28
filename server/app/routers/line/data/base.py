@@ -7,6 +7,10 @@ class MentorBase:
     FULL_IMG_PATH = None
     ICON_PATH = None
 
+    # ------
+    # 登録処理
+    # ------
+
     # 登録開始時(グループID聴取)のメッセージ
     RESPONSE_REQUEST_START_REGISTRATION = "「はじめる」と入力してください！"
     RESPONSE_ASK_GROUP_ID = "管理者から発行されたグループIDを入力してください！"
@@ -42,7 +46,16 @@ class MentorBase:
 
     RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME = "お名前からもう一度お伺いしますが、よろしいですか？"
 
+    # ------
+    # メンタリング
+    # ------
+    # プッシュ時
+    RESPONSE_PUSH_START = "こんにちは！本日のメンタリングを行わせていただきます！"
+    RESPONSE_PUSH_HEARING = "最近の様子を教えてください！（例: 調子が良かった、悪かった、など）"
+
+    # -----
     # 共通
+    # -----
     RESPONSE_REQUEST_BOOLEAN = "お手数ですが、「はい」か「いいえ」でお答えいただけますと幸いです!"
     RESPONSE_REQUEST_SELECT = "お手数ですが、上のボタンからの選択をお願いします！"
     RESPONSE_REQUEST_TEXT = "お手数ですが、テキストでの入力をお願いします！"

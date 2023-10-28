@@ -69,3 +69,16 @@ def get_user_in_group(db: Session, group: models.Group, user_id: int) -> tuple[m
     return group_users[0] if len(group_users) > 0 else (None, None)
 
 
+def get_by_user_invite_token(db: Session, user_invite_token: str) -> models.Group:
+    return db.query(models.Group).filter(models.Group.user_invite_token == user_invite_token).first()
+
+
+def join_user(db: Session, group: models.Group, user: models.User) -> models.GroupUser:
+    db_group_user = models.GroupUser(
+        group_id=group.id,
+        user_id=user.id
+    )
+    db.add(db_group_user)
+    db.commit()
+    db.refresh(db_group_user)
+    return db_group_user

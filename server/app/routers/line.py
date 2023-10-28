@@ -154,59 +154,60 @@ async def handle_callback(
                 )
 
         # 初期状態でない場合
-        # 状態を取得
-        saved_status: STATUS = STATUS[saved_data.state]
+        else:
+            # 状態を取得
+            saved_status: STATUS = STATUS[saved_data.state]
 
-        # GroupIDを聞いた場合
-        if saved_status == STATUS.INPUT_GROUP_ID:
-            # グループIDからグループを取得
-            group = get_by_user_invite_token(db, input_text)
-            # グループが存在しない場合は再入力を求める
-            if group is None:
-                reply_message_list.append(TextMessage(
-                    text="グループIDが間違っているようです。もう一度正しいものを送ってください。")
-                )
+            # GroupIDを聞いた場合
+            if saved_status == STATUS.INPUT_GROUP_ID:
+                # グループIDからグループを取得
+                group = get_by_user_invite_token(db, input_text)
+                # グループが存在しない場合は再入力を求める
+                if group is None:
+                    reply_message_list.append(TextMessage(
+                        text="グループIDが間違っているようです。もう一度正しいものを送ってください。")
+                    )
 
-            # グループが存在した場合、グループに参加するか確認する
-            else:
-                reply_message_list.append(TextMessage(
-                    text=f"グループ「{group.name}」に参加しますか？")
-                )
-                # 状態を更新
-                saved_data.state = STATUS.CONFIRM_GROUP_JOIN.name
-                saved_data.data["group_id"] = group.id
-                set_saved_data(line_id, saved_data)
+                # グループが存在した場合、グループに参加するか確認する
+                else:
+                    reply_message_list.append(TextMessage(
+                        text=f"グループ「{group.name}」に参加しますか？")
+                    )
+                    # 状態を更新
+                    saved_data.state = STATUS.CONFIRM_GROUP_JOIN.name
+                    saved_data.data["group_id"] = group.id
+                    set_saved_data(line_id, saved_data)
 
 
-        # グループに参加するか確認していた場合
-        elif saved_status == STATUS.CONFIRM_GROUP_JOIN:
-            # 参加する場合
-            if input_text == "はい":
-                # 氏名を聞く
-                reply_message_list.append(TextMessage(
-                    text="氏名を入力してください")
-                )
-                # 状態を更新
-                saved_data.state = STATUS.INPUT_NAME.name
-                set_saved_data(line_id, saved_data)
+            # グループに参加するか確認していた場合
+            elif saved_status == STATUS.CONFIRM_GROUP_JOIN:
+                # 参加する場合
+                if input_text == "はい":
+                    # 氏名を聞く
+                    reply_message_list.append(TextMessage(
+                        text="氏名を入力してください")
+                    )
+                    # 状態を更新
+                    saved_data.state = STATUS.INPUT_NAME.name
+                    set_saved_data(line_id, saved_data)
 
-            # 参加しない場合
-            elif input_text == "いいえ":
-                # 再入力を求める
-                reply_message_list.append(TextMessage(
-                    text="参加をキャンセルしました、再度グループIDを入力してください")
-                )
-                # 状態を更新
-                saved_data.state = STATUS.INPUT_GROUP_ID.name
-                del saved_data.data["group_id"]
-                set_saved_data(line_id, saved_data)
+                # 参加しない場合
+                elif input_text == "いいえ":
+                    # 再入力を求める
+                    reply_message_list.append(TextMessage(
+                        text="参加をキャンセルしました、再度グループIDを入力してください")
+                    )
+                    # 状態を更新
+                    saved_data.state = STATUS.INPUT_GROUP_ID.name
+                    del saved_data.data["group_id"]
+                    set_saved_data(line_id, saved_data)
 
-            # どちらでもない場合
-            else:
-                # グループに参加するか確認する
-                reply_message_list.append(TextMessage(
-                    text="「はい」か「いいえ」でお答えください。")
-                )
+                # どちらでもない場合
+                else:
+                    # グループに参加するか確認する
+                    reply_message_list.append(TextMessage(
+                        text="「はい」か「いいえ」でお答えください。")
+                    )
 
         # テスト
         reply_message_list.append(TextMessage(

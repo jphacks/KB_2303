@@ -92,7 +92,6 @@ class User(UserBase):
 
 
 class UserConfigBase(BaseModel):
-    user_id: int
     interval_days: int
     character_id: int
 
@@ -103,6 +102,7 @@ class UserConfigCreate(UserConfigBase):
 
 class UserConfig(UserConfigBase):
     id: int
+    user_id: int
     created_at: datetime
     updated_at: datetime
 

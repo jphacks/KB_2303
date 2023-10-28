@@ -11,7 +11,7 @@ from linebot.v3.messaging import (
     AsyncMessagingApi,
     Configuration,
     TextMessage,
-    ReplyMessageRequest
+    ReplyMessageRequest, PushMessageRequest
 )
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.webhooks import (
@@ -150,15 +150,17 @@ def send_mentoring_start_messages():
             config = user.config
             mentor = MENTORS[config.mentor_id]
             line_bot_api.push_message(
-                user_id=line_id,
-                messages=[
-                    TextMessage(
-                        text=mentor.RESPONSE_PUSH_START
-                    ),
-                    TextMessage(
-                        text=mentor.RESPONSE_PUSH_HEARING
-                    )
-                ]
+                PushMessageRequest(
+                    to=line_id,
+                    messages=[
+                        TextMessage(
+                            text=mentor.RESPONSE_PUSH_START
+                        ),
+                        TextMessage(
+                            text=mentor.RESPONSE_PUSH_HEARING
+                        )
+                    ]
+                )
             )
 
 

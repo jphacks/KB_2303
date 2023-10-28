@@ -16,7 +16,8 @@ from linebot.v3.exceptions import (
 )
 from linebot.v3.webhooks import (
     MessageEvent,
-    TextMessageContent
+    TextMessageContent,
+    UserSource
 )
 from linebot.models import (
     TextSendMessage

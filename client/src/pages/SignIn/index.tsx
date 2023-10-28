@@ -11,7 +11,7 @@ const Page: React.FC = () => {
 
   const signIn = () => {
     console.log('sign-in')
-    fetch(`${apiEndPoint}/session`, {
+    fetch(`${apiEndPoint}/session/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

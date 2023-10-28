@@ -20,6 +20,7 @@ from linebot.v3.webhooks import (
 )
 
 from crud.schemas import LINECommunicationStateSchema
+from .data import MENTORS
 from db.crud import user as user_crud
 from db.session import get_db
 from .controller.registration import registration_controller
@@ -108,10 +109,17 @@ async def handle_callback(
 
         # 未登録ユーザ
         if user is None:
+            # メンター取得
+            if saved_data is None or "mentor_id" not in saved_data.data:
+                mentor = MENTORS[0]
+            else:
+                mentor = MENTORS[saved_data.data["mentor_id"]]
+
             reply_message_list.extend(registration_controller(
                 saved_data=saved_data,
                 line_id=line_id,
                 input_text=input_text,
+                mentor=mentor,
                 db=db
             ))
 

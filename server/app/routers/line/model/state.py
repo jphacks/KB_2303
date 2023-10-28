@@ -6,7 +6,7 @@ class STATUS(Enum):
     # 1xxxx: ユーザの登録
     INPUT_GROUP_ID = 10101  # グループIDを聞く
     CONFIRM_GROUP_JOIN = 10102  # グループに参加するか確認
-    SELECT_CHARACTER = 10201
+    SELECT_MENTOR = 10201
     INPUT_NAME = 10301  # 氏名を聞く
     INPUT_GOAL = 10401  # 目標を聞く
     INPUT_INTERVAL = 10501  # メンタリングの頻度を聞く

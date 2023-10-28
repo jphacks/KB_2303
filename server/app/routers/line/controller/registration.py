@@ -19,7 +19,7 @@ from ..data.base import MentorBase
 
 
 def confirm_data(saved_data: LINECommunicationStateSchema):
-    return "\n".join([
+    return "\n".join(list(map(str, [
         f'氏名:',
         {saved_data.data["name"]},
         "",
@@ -31,7 +31,7 @@ def confirm_data(saved_data: LINECommunicationStateSchema):
         "",
         f'{saved_data.data["interval_days"]}日後までの目標:',
         {saved_data.data["target"]}
-    ])
+    ])))
 
 
 def registration_controller(
@@ -360,4 +360,3 @@ def registration_controller(
                 )
 
     return reply_message_list
-

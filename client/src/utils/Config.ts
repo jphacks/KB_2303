@@ -1,3 +1,3 @@
 export const Config = {
-  ApiEndPoint: 'https://api.thiscode.proj.ukwhatn.com/api',
+  ApiEndPoint: import.meta.env.VITE_API_ENDPOINT,
 }

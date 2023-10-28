@@ -244,7 +244,7 @@ async def handle_callback(
                         ))
                         # 状態を更新
                         saved_data.state = STATUS.INPUT_NAME.name
-                        saved_data.data["character_id"] = input_text
+                        saved_data.data["character_id"] = int(input_text)
                         set_saved_data(line_id, saved_data)
 
                 # 氏名を聞いていた場合

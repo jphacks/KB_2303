@@ -12,3 +12,6 @@ class LINECommunicationStateSchema:
     def __init__(self, state: str = None, data: dict = None):
         self.state = state
         self.data = data
+
+    def __str__(self):
+        return f"state: {self.state}\ndata: {self.data}"

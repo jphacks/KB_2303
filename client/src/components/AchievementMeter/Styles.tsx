@@ -2,8 +2,8 @@ import styled from '@emotion/styled'
 import { Color } from '../../utils/Color'
 
 export const Root = styled('div')`
-  width: 100px;
-  height: 100px;
+  width: 102px;
+  height: 102px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -29,8 +29,8 @@ export const RootTextBack = styled('div')`
 `
 
 export const Flame = styled('div')`
-  width: 98px;
-  height: 98px;
+  width: 100px;
+  height: 100px;
   position: absolute;
   border: 1px solid ${Color.gray[850]};
   border-radius: 4px;
@@ -40,11 +40,11 @@ export const Flame = styled('div')`
 export const Meter = styled('div')<{
   par: number
 }>`
-  width: 98px;
-  max-height: 98px;
-  height: ${({par}) => par - 2}px;
+  width: 100px;
+  max-height: 100px;
+  height: ${({ par }) => par}px;
   position: absolute;
-  background: ${({par}) => par < 40 ? Color.red.main: Color.green.main};
+  background: ${({ par }) => (par < 40 ? Color.red.main : Color.green.main)};
   border-radius: 3px;
   top: 100%;
   transform: translate(0, calc(-100% - 1px));

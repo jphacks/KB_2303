@@ -1,5 +1,4 @@
 import secrets
-from typing import List, Any, Tuple
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -60,3 +59,13 @@ def get_users_in_group(db: Session, group: models.Group) -> list[tuple[models.Us
         return []
 
     return list(map(lambda group_user: (group_user.user, group_user), group_users))
+
+
+def get_user_in_group(db: Session, group: models.Group, user_id: int) -> tuple[models.User, models.GroupUser] | None:
+    group_users = get_users_in_group(db, group)
+
+    group_users = [user_tuple for user_tuple in group_users if user_tuple[0].id == user_id]
+
+    return group_users[0] if len(group_users) > 0 else (None, None)
+
+

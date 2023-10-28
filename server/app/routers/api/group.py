@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", description="Group作成・自分を参加させる")
 def create(
         request: Request,
         response: Response,
@@ -41,7 +41,7 @@ def create(
     return group
 
 
-@router.get("/")
+@router.get("/", description="自分が参加しているGroupを取得")
 async def get(
         request: Request,
         response: Response,
@@ -68,7 +68,7 @@ async def get(
     return group
 
 
-@router.post("/join")
+@router.post("/join", description="AdminInviteTokenを使ってGroupに参加")
 def join(
         request: Request,
         response: Response,
@@ -99,7 +99,7 @@ def join(
     return group
 
 
-@router.get("/users")
+@router.get("/users", description="自分のGroupに参加しているユーザー一覧を取得")
 async def get_users(
         request: Request,
         response: Response,

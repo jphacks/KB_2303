@@ -93,3 +93,48 @@ class UserPublic(UserBase):
 
 class GroupUserPublic(UserPublic):
     joined_at: datetime
+
+
+class ReportBase(BaseModel):
+    user_id: int
+    target: str
+    scheduled_hearing_date: datetime
+
+
+class ScheduledReport(ReportBase):
+    pass
+
+
+class Report(ReportBase):
+    id: int
+
+    no: int
+
+    emotion_score: float | None
+    emotion_magnitude: float | None
+
+    impression: str | None
+    impression_feedback: str | None
+
+    achieved_score: int | None
+
+    reason: str | None
+    reason_feedback: str | None
+
+    problem: str | None
+    problem_feedback: str | None
+
+    target: str
+
+    scheduled_hearing_date: datetime
+    hearing_date: datetime | None
+
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class GroupUserPublicWithReports(GroupUserPublic):
+    reports: list[Report]

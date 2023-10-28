@@ -1,7 +1,6 @@
-import { ReactNode, lazy, useEffect } from 'react'
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
+import { ReactNode, lazy } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import { Result } from 'result-type-ts'
-import { loginCheck } from './api/loginCheck'
 
 const HomePage = lazy(() => import('../pages/Home'))
 const SignInPage = lazy(() => import('../pages/SignIn'))

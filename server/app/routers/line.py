@@ -378,7 +378,7 @@ async def handle_callback(
                     )
 
             # 氏名の入力に戻るか確認をしていた場合
-            elif set_saved_data == STATUS.CONFIRM_RETURN_TO_INPUT_NAME:
+            elif saved_status == STATUS.CONFIRM_RETURN_TO_INPUT_NAME:
                 if input_text == "やり直す":
                     # 氏名を聞く
                     reply_message_list.append(TextMessage(

@@ -147,7 +147,8 @@ def send_mentoring_start_messages():
         for report in reports:
             user = report.user
             line_id = user.line_id
-            mentor = MENTORS[user.config.mentor_id]
+            config = user.config
+            mentor = MENTORS[config.mentor_id]
             line_bot_api.push_message(
                 user_id=line_id,
                 messages=[

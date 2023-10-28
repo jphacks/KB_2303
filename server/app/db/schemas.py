@@ -119,7 +119,6 @@ class GroupUserPublic(UserPublic):
 
 
 class ReportBase(BaseModel):
-    user_id: int
     target: str
     scheduled_hearing_date: datetime
 
@@ -130,6 +129,7 @@ class ScheduledReport(ReportBase):
 
 class Report(ReportBase):
     id: int
+    user_id: int
 
     no: int
 

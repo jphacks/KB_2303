@@ -22,8 +22,9 @@ log:
 generate:
 	docker compose run --rm client npm run generate-component
 	
-build:
+build-client:
 	docker compose run --rm client npm run build
+	
 revision:
 	 docker compose exec server /bin/bash -c "cd /db && alembic revision --autogenerate -m '${NAME}'"
 

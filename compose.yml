@@ -7,7 +7,7 @@ services:
     volumes:
       - ./client:/app
     ports:
-      - "127.0.0.1:5173:5173"
+      - "127.0.0.1:3000:5173"
     command: npm run dev
 
   sb:
@@ -18,6 +18,16 @@ services:
     ports:
       - "127.0.0.1:6006:6006"
     command: npm run storybook
+
+  nginx:
+    image: nginx
+    ports:
+      - 127.0.0.1:5173:80
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./client/dist:/var/www
+    depends_on:
+      - server
 
   server:
     container_name: server

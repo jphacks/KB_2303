@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from routers import sample, line
 from routers.api import main as api_main
+from routers.line import handler as line_handler
 from util.env import get_env
 
 # logger config
@@ -46,10 +46,7 @@ app.mount("/static", StaticFiles(directory="/app/static"), name="static")
 
 # add routers
 app.include_router(
-    sample.router
-)
-app.include_router(
-    line.router
+    line_handler.router
 )
 app.include_router(
     api_main.router,

@@ -15,21 +15,30 @@ const Page: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navi = useNavigate()
+
+  const sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+  
   const signUp = () => {
     signup(name, email, password).then(() => {
-      if (groupCode === '') {
-        createGroup(groupName).then(() => {
-          console.log('create group')
-          navi('/')
-        }).catch((e) => {
-          console.error('catch create group error', e)
-        })
-      } else {
-        joinGroup(groupCode).then(() => {
-          console.log('join group')
-          navi('/')
-        })
-      }
+      sleep(200).then(() => {
+        if (groupCode === '') {
+          createGroup(groupName)
+            .then(() => {
+              console.log('create group')
+              navi('/')
+            })
+            .catch((e) => {
+              console.error('catch create group error', e)
+            })
+        } else {
+          joinGroup(groupCode).then(() => {
+            console.log('join group')
+            navi('/')
+          })
+        }
+      })
     })
   }
 

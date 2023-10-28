@@ -1,4 +1,5 @@
 from .redis import RedisCrud
+from .schemas import LINECommunicationStateSchema
 
 
 class LineCommunicationStateCrud:
@@ -20,10 +21,10 @@ class LineCommunicationStateCrud:
     def _delete(self, key):
         return self.crud.delete(key)
 
-    def create(self, line_id, data):
+    def set(self, line_id, data: LINECommunicationStateSchema):
         self._set(line_id, data)
 
-    def get(self, line_id):
+    def get(self, line_id) -> LINECommunicationStateSchema:
         return self._get(line_id)
 
     def delete(self, line_id):

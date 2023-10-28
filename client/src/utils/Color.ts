@@ -1,4 +1,4 @@
-export interface Color {
+export const Color = {
   gray: {
     [100]: '#FCFCFC'
     [150]: '#F5F5F5'

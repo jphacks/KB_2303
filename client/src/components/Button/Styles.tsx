@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
+import { Color } from '../../utils/Color'
 
-export const Root = styled('div')<{ backgroundColor: string }>`
+export const Fill = styled('div')`
   width: 100px;
   height: 32px;
   border-radius: 8px;
-  background: ${({ backgroundColor }) => backgroundColor};
+  color: ${Color.white};
+  background: ${({ color }) => color};
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,9 +1,15 @@
-import { Root } from './Styles'
+import { Fill } from './Styles'
 
 type Props = {
-  backgroundColor: string
+  type: 'Fill' | 'Outline'
+  color: 'green' | 'red' | 'gray'
+  onClick: () => void
 }
 
-export const Button: React.FC<Props> = ({ backgroundColor }) => {
-  return <Root backgroundColor={backgroundColor}>BUTTON</Root>
+export const Button: React.FC<Props> = ({ type, color, onClick }) => {
+  return (
+    <Fill color={color} onClick={onClick}>
+      BUTTON
+    </Fill>
+  )
 }

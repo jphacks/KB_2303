@@ -41,8 +41,7 @@ const Page: React.FC = () => {
         return {
           id: u.id,
           name: u.name,
-          email: u.email,
-          updated_at: u.updated_at,
+          joined_at: u.joined_at,
         }
       })
       setGroupUsers(d)

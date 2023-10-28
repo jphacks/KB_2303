@@ -6,13 +6,13 @@ import { Grid } from 'react-loader-spinner'
 import styled from '@emotion/styled'
 import { Color } from './utils/Color'
 import { loginCheck } from './utils/api/loginCheck'
-import { GroupUser } from './models/GroupUser'
+import { GroupAdmin } from './models/GroupAdmin'
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 function App() {
-  const [user, setUser] = useState<Result<GroupUser>>(Result.failure('INIT'))
+  const [user, setUser] = useState<Result<GroupAdmin>>(Result.failure('INIT'))
 
   useEffect(() => {
     sleep(500).then(() => {
@@ -63,7 +63,7 @@ export default App
 
 const Redirect: React.FC<{
   to: string
-  setUser: Dispatch<SetStateAction<Result<GroupUser>>>
+  setUser: Dispatch<SetStateAction<Result<GroupAdmin>>>
 }> = ({ to, setUser }) => {
   const navi = useNavigate()
   useEffect(() => {

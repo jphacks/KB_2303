@@ -1,14 +1,14 @@
 import { ReactNode, lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Result } from 'result-type-ts'
-import { GroupUser } from '../models/GroupUser'
+import { GroupAdmin } from '../models/GroupAdmin'
 
 const HomePage = lazy(() => import('../pages/Home'))
 const SignInPage = lazy(() => import('../pages/SignIn'))
 const SignUpPage = lazy(() => import('../pages/SignUp'))
 
 type Props = {
-  user: Result<GroupUser>
+  user: Result<GroupAdmin>
   redirect: (to: string) => ReactNode
 }
 

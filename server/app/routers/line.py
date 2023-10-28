@@ -33,22 +33,6 @@ def get_saved_data(line_id: str) -> LINECommunicationStateSchema | None:
     return data
 
 
-# line_idに紐づくデータを取得
-def get_data(line_id: str):
-    with LineCommunicationStateCrud() as line_communication_state_crud:
-        data = line_communication_state_crud.get(line_id)
-    return data.data
-
-
-# 処理状況
-def get_status(line_id: str):
-    # lineのidから処理状況のEnumの値を返して欲しい
-    with LineCommunicationStateCrud() as line_communication_state_crud:
-        registration_status = line_communication_state_crud.get(line_id)
-
-    return registration_status.state
-
-
 # line_idに紐づくデータを登録、ステータスの更新
 def set_saved_data(line_id: str, schema: LINECommunicationStateSchema):
     with LineCommunicationStateCrud() as line_communication_state_crud:
@@ -56,6 +40,12 @@ def set_saved_data(line_id: str, schema: LINECommunicationStateSchema):
             line_id,
             schema
         )
+
+
+# ステータスを削除
+def delete_saved_data(line_id: str):
+    with LineCommunicationStateCrud() as line_communication_state_crud:
+        line_communication_state_crud.delete(line_id)
 
 
 # define router
@@ -127,11 +117,22 @@ async def handle_callback(
         # textを取得
         input_text = ev.message.text.strip()
 
+        # 送信メッセージのリスト
+        reply_message_list = []
+
+        # ----debug-----
+        # TODO: けす
+
+        if input_text == "clearstate":
+            delete_saved_data(line_id)
+            reply_message_list.append(TextMessage(
+                text="ステータスを削除しました")
+            )
+
         # stateを確認する
         saved_data: LINECommunicationStateSchema | None = get_saved_data(line_id)
 
-        # 送信メッセージのリスト
-        reply_message_list = []
+        # ----end of debug-----
 
         # 初期状態である場合
         if saved_data is None:

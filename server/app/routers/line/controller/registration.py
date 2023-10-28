@@ -4,12 +4,12 @@ from linebot.v3.messaging import (
     TextMessage,
     TemplateMessage, ButtonsTemplate, MessageAction
 )
-from util.state import STATUS
 
 from crud.schemas import LINECommunicationStateSchema
 from db import schemas
 from db.crud import user as user_crud
 from db.crud.group import get_by_user_invite_token
+from routers.line.model.state import STATUS
 from routers.line.util.session import (
     set_saved_data,
     delete_saved_data
@@ -89,7 +89,7 @@ def registration_controller(
                     text="キャラクターを選択してください")
                 )
                 # 状態を更新
-                saved_data.state = STATUS.SERECT_CHARACTER.name
+                saved_data.state = STATUS.SELECT_CHARACTER.name
                 set_saved_data(line_id, saved_data)
 
             # 参加しない場合
@@ -110,7 +110,7 @@ def registration_controller(
                     text="「はい」か「いいえ」でお答えください。")
                 )
         # キャラクターを選択していた場合
-        elif saved_status == STATUS.SERECT_CHARACTER:
+        elif saved_status == STATUS.SELECT_CHARACTER:
             if input_text == "":
                 reply_message_list.append(TextMessage(
                     text="キャラクターを選択してください"

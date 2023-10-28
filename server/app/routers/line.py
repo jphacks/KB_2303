@@ -1,29 +1,36 @@
 import os
 import sys
-
-from fastapi import Request, APIRouter, HTTPException
 from enum import Enum
-from crud.line_communication_state import LineCommunicationStateCrud
-from crud.schemas import LINECommunicationStateSchema
 
-from linebot.v3.webhook import WebhookParser
+from fastapi import Request, APIRouter, HTTPException, Depends
+from linebot.v3.exceptions import (
+    InvalidSignatureError
+)
 from linebot.v3.messaging import (
     AsyncApiClient,
     AsyncMessagingApi,
     Configuration,
-    ReplyMessageRequest,
-    TextMessage
+    TextMessage,
+    ReplyMessageRequest
 )
-from linebot.v3.exceptions import (
-    InvalidSignatureError
-)
+from linebot.v3.webhook import WebhookParser
 from linebot.v3.webhooks import (
     MessageEvent,
-    TextMessageContent
+    TextMessageContent,
+    UserSource
 )
-from linebot.models import (
-    TextSendMessage
-)
+
+from crud.line_communication_state import LineCommunicationStateCrud
+from crud.schemas import LINECommunicationStateSchema
+from db.crud.group import get_by_user_invite_token
+from db.session import get_db
+
+
+# redisに保存されたデータを取得
+def get_saved_data(line_id: str) -> LINECommunicationStateSchema | None:
+    with LineCommunicationStateCrud() as line_communication_state_crud:
+        data = line_communication_state_crud.get(line_id)
+    return data
 
 
 # line_idに紐づくデータを取得
@@ -43,11 +50,11 @@ def get_status(line_id: str):
 
 
 # line_idに紐づくデータを登録、ステータスの更新
-def set_data(line_id: str, state: str, data: dict):
+def set_saved_data(line_id: str, schema: LINECommunicationStateSchema):
     with LineCommunicationStateCrud() as line_communication_state_crud:
         line_communication_state_crud.set(
             line_id,
-            LINECommunicationStateSchema(state=state, data=data)
+            schema
         )
 
 
@@ -78,29 +85,26 @@ parser = WebhookParser(channel_secret)
 
 # "10101" 上1桁：1-ユーザの登録,2-定期メンタリング 上23桁：処理順 上45桁：同処理で分岐する場合1ずつ加算する
 class STATUS(Enum):
-    START = 10201  # ユーザの登録処理開始
-    GROUP_JOIN_SUCCESS = 10501  # グループへの参加が完了した状態
-    NAME_SUCCESS = 10601  # 氏名の登録が完了した状態
-    CHARACTER_CHOICE_SUCCESS = 10701  # キャラクター選択が完了した状態
-    GOAL_SUCCESS = 10801  # 目標の設定が完了した状態
-    INTERVAL_SUCCESS = 10901  # インターバルの設定が成功した時
-    INTERVAL_FAIL = 10902  # インターバルの設定が失敗した時
-    TARGET_SUCCESS = 11001  # 短期目標の設定が完了した時
-
-    # 現状使っていないもの
-    NO_PROCESS = 10101  # 登録処理が走っていない状態
-    ID_SUCCESS = 10301  # ユーザIDの登録がされた状態
-    GROUP_SEARCH_SUCCESS = 10401  # 正しいグループIDが入力された時
-    GROUP_SEARCH_FAIL = 10402  # 誤ったグループIDが入力された時
+    # 1xxxx: ユーザの登録
+    INPUT_GROUP_ID = 10101  # グループIDを聞く
+    CONFIRM_GROUP_JOIN = 10102  # グループに参加するか確認
+    INPUT_NAME = 10201  # 氏名を聞く
+    INPUT_GOAL = 10301  # 目標を聞く
+    INPUT_INTERVAL = 10401  # メンタリングの頻度を聞く
+    INPUT_TARGET = 10501  # 短期目標を聞く
+    CONFIRM_REGISTRATION = 10601  # 登録内容を確認
+    CONFIRM_RETURN_TO_INPUT_NAME = 10602  # 氏名の入力に戻るか確認
 
 
 @router.post("/callback")
-async def handle_callback(request: Request):
+async def handle_callback(
+        request: Request,
+        db=Depends(get_db)
+):
     signature = request.headers['X-Line-Signature']
 
     # get request body as text
-    body = await request.body()
-    body = body.decode()
+    body = (await request.body()).decode()
 
     try:
         events = parser.parse(body, signature)
@@ -112,79 +116,107 @@ async def handle_callback(request: Request):
             continue
         if not isinstance(ev.message, TextMessageContent):
             continue
-        line_id = ev.source.user_id
 
-        # 何もしていないとき
-        if get_status(line_id) == None:
-            if ev.message.text == "はじめる":
-                set_data(line_id, "START", {"line_id": line_id})
-                return "GroupIDを聞く"
-            else:
-                return "回答, はじめると送ってね"
-        
-        # GroupIDを聞く
-        elif get_status(line_id) == "START":
-            # 正しいグループIDかどうか
-            if ev.message.text == True:
-                return "GroupNameに参加しますか？" # カルーセルで
-            # グループに参加
-            elif ev.message.text == "参加する":
-                set_data(line_id, "GROUP_JOIN_SUCCESS", {"group_id": group_id})
-                return "GroupNameに参加しました!, 次にあなたの名前を教えてください"
-            # 誤ったグループIDの場合
-            else:
-                return "回答, グループIDが間違っているようです。もう一度正しいものを送ってください。"
-        # 氏名を聞く
-        elif get_status(line_id) == "GROUP_JOIN_SUCCESS":
-            if ev.message.text == 
-            
+        # event.sourceがuserでない場合は処理しない
+        if ev.source.type != "user":
+            continue
+        # line_idを取得
+        source: UserSource = ev.source
+        line_id = source.user_id
+        # textを取得
+        input_text = ev.message.text.strip()
 
+        # stateを確認する
+        saved_data: LINECommunicationStateSchema | None = get_saved_data(line_id)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # 送信メッセージのリスト
         reply_message_list = []
 
-        if get_status(line_id):
-            ev.message.text == "はじめる":
-            
-            reply_message_list.append(TextMessage(
-                text="GroupIDがあれば入力してください。\nなければなしと送信してください。"))
-
-        # ユーザが未登録andはじめると送られていない
-        if True:
-            await line_bot_api.reply_message(
-                ReplyMessageRequest(
-                    reply_token=ev.reply_token,
-                    messages=[
-                        TextMessage(text="はじめると送ってください(else)"),
-                    ]
+        # 初期状態である場合
+        if saved_data is None:
+            # はじめると送られているか
+            if input_text == "はじめる":
+                # GroupID入力へ移行
+                reply_message_list.append(TextMessage(
+                    text="管理者から発行されたGroupIDを入力してください")
                 )
-            )
+                # 状態を更新
+                set_saved_data(line_id, LINECommunicationStateSchema(
+                    state=STATUS.INPUT_GROUP_ID.name,
+                    data={}
+                ))
+                continue
+            else:
+                reply_message_list.append(TextMessage(
+                    text="「はじめる」と送ってください")
+                )
+                continue
 
+        # 初期状態でない場合
+        # 状態を取得
+        saved_status: STATUS = STATUS[saved_data.state]
+
+        # GroupIDを聞いた場合
+        if saved_status == STATUS.INPUT_GROUP_ID:
+            # グループIDからグループを取得
+            group = get_by_user_invite_token(db, input_text)
+            # グループが存在しない場合は再入力を求める
+            if group is None:
+                reply_message_list.append(TextMessage(
+                    text="グループIDが間違っているようです。もう一度正しいものを送ってください。")
+                )
+                continue
+            # グループが存在した場合、グループに参加するか確認する
+            else:
+                reply_message_list.append(TextMessage(
+                    text=f"グループ「{group.name}」に参加しますか？")
+                )
+                # 状態を更新
+                saved_data.state = STATUS.CONFIRM_GROUP_JOIN.name
+                saved_data.data["group_id"] = group.id
+                set_saved_data(line_id, saved_data)
+                continue
+
+        # グループに参加するか確認していた場合
+        elif saved_status == STATUS.CONFIRM_GROUP_JOIN:
+            # 参加する場合
+            if input_text == "はい":
+                # 氏名を聞く
+                reply_message_list.append(TextMessage(
+                    text="氏名を入力してください")
+                )
+                # 状態を更新
+                saved_data.state = STATUS.INPUT_NAME.name
+                set_saved_data(line_id, saved_data)
+                continue
+            # 参加しない場合
+            elif input_text == "いいえ":
+                # 再入力を求める
+                reply_message_list.append(TextMessage(
+                    text="参加をキャンセルしました、再度グループIDを入力してください")
+                )
+                # 状態を更新
+                saved_data.state = STATUS.INPUT_GROUP_ID.name
+                del saved_data.data["group_id"]
+                set_saved_data(line_id, saved_data)
+                continue
+            # どちらでもない場合
+            else:
+                # グループに参加するか確認する
+                reply_message_list.append(TextMessage(
+                    text="「はい」か「いいえ」でお答えください。")
+                )
+                continue
+
+        # テスト
+        reply_message_list.append(TextMessage(
+            text=f"入力: {input_text}, ステータス: {saved_status.name}, データ: {saved_data.data}"
+        ))
+
+        # reply_message_listを送信
         await line_bot_api.reply_message(
             ReplyMessageRequest(
                 reply_token=ev.reply_token,
                 messages=reply_message_list
             )
         )
-        return 'OK'
-
-    return 'OK'

@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from routers import sample, line
@@ -24,6 +25,21 @@ if env_mode == "production":
 
 # create app
 app = FastAPI(**app_params)
+
+origins = [
+    "http://client.thiscode.proj.ukwhatn.com",
+    "https://client.thiscode.proj.ukwhatn.com",
+    "http://localhost:8080",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # mount static folder
 app.mount("/static", StaticFiles(directory="/app/static"), name="static")

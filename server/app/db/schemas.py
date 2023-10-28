@@ -93,7 +93,7 @@ class User(UserBase):
 
 class UserConfigBase(BaseModel):
     interval_days: int
-    character_id: int
+    mentor_id: int
 
 
 class UserConfigCreate(UserConfigBase):

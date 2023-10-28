@@ -24,7 +24,7 @@ def create_config(db: Session, user: models.User, config: schemas.UserConfigCrea
     db_config = models.UserConfig(
         user_id=user.id,
         interval_days=config.interval_days,
-        character_id=config.character_id
+        mentor_id=config.mentor_id
     )
 
     db.add(db_config)

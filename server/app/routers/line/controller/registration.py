@@ -14,12 +14,14 @@ from routers.line.util.session import (
     set_saved_data,
     delete_saved_data
 )
+from ..data.base import MentorBase
 
 
 def registration_controller(
         saved_data: LINECommunicationStateSchema | None,
         line_id: str,
         input_text: str,
+        mentor: MentorBase,
         db: any):
     reply_message_list = []
 
@@ -29,7 +31,7 @@ def registration_controller(
         if input_text == "はじめる":
             # GroupID入力へ移行
             reply_message_list.append(TextMessage(
-                text="管理者から発行されたGroupIDを入力してください")
+                text=mentor.RESPONSE_ASK_GROUP_ID)
             )
             # 状態を更新
             set_saved_data(line_id, LINECommunicationStateSchema(
@@ -39,7 +41,7 @@ def registration_controller(
 
         else:
             reply_message_list.append(TextMessage(
-                text="「はじめる」と送ってください")
+                text=mentor.RESPONSE_REQUEST_START_REGISTRATION)
             )
 
     # 初期状態でない場合
@@ -54,15 +56,19 @@ def registration_controller(
             # グループが存在しない場合は再入力を求める
             if group is None:
                 reply_message_list.append(TextMessage(
-                    text="グループIDが間違っているようです。もう一度正しいものを送ってください。")
-                )
+                    text=mentor.RESPONSE_WRONG_GROUP_ID
+                ))
 
             # グループが存在した場合、グループに参加するか確認する
             else:
+                message = mentor.build(
+                    mentor.RESPONSE_CONFIRM_GROUP_JOIN,
+                    {"GROUP_NAME": group.name}
+                )
                 reply_message_list.append(TemplateMessage(
-                    alt_text=f"{group.name}に参加しますか？",
+                    alt_text=message,
                     template=ButtonsTemplate(
-                        text=f"{group.name}に参加しますか？",
+                        text=message,
                         actions=[
                             MessageAction(
                                 label="はい",
@@ -86,17 +92,17 @@ def registration_controller(
             if input_text == "はい":
                 # 氏名を聞く
                 reply_message_list.append(TextMessage(
-                    text="キャラクターを選択してください")
+                    text=mentor.RESPONSE_ASK_MENTOR)
                 )
                 # 状態を更新
-                saved_data.state = STATUS.SELECT_CHARACTER.name
+                saved_data.state = STATUS.SELECT_MENTOR.name
                 set_saved_data(line_id, saved_data)
 
             # 参加しない場合
             elif input_text == "いいえ":
                 # 再入力を求める
                 reply_message_list.append(TextMessage(
-                    text="参加をキャンセルしました、再度グループIDを入力してください")
+                    text=mentor.RESPONSE_CANCEL_GROUP_JOIN)
                 )
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_GROUP_ID.name
@@ -107,34 +113,38 @@ def registration_controller(
             else:
                 # グループに参加するか確認する
                 reply_message_list.append(TextMessage(
-                    text="「はい」か「いいえ」でお答えください。")
+                    text=mentor.RESPONSE_REQUEST_BOOLEAN)
                 )
         # キャラクターを選択していた場合
-        elif saved_status == STATUS.SELECT_CHARACTER:
+        elif saved_status == STATUS.SELECT_MENTOR:
             if input_text == "":
                 reply_message_list.append(TextMessage(
-                    text="キャラクターを選択してください"
+                    text=mentor.RESPONSE_REQUEST_SELECT
                 ))
             else:
+                # 挨拶
+                reply_message_list.append(TextMessage(
+                    text=mentor.RESPONSE_GREETING
+                ))
                 # 氏名を聞く
                 reply_message_list.append(TextMessage(
-                    text="氏名を入力してください"
+                    text=mentor.RESPONSE_ASK_NAME
                 ))
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_NAME.name
-                saved_data.data["character_id"] = int(input_text)
+                saved_data.data["mentor_id"] = int(input_text)
                 set_saved_data(line_id, saved_data)
 
         # 氏名を聞いていた場合
         elif saved_status == STATUS.INPUT_NAME:
             if input_text == "":
                 reply_message_list.append(TextMessage(
-                    text="氏名を入力してください")
+                    text=mentor.RESPONSE_REQUEST_TEXT)
                 )
             else:
                 # 目標を聞く
                 reply_message_list.append(TextMessage(
-                    text="目標を入力してください")
+                    text=mentor.RESPONSE_ASK_GOAL)
                 )
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_GOAL.name
@@ -145,14 +155,14 @@ def registration_controller(
         elif saved_status == STATUS.INPUT_GOAL:
             if input_text == "":
                 reply_message_list.append(TextMessage(
-                    text="目標を入力してください")
+                    text=mentor.RESPONSE_REQUEST_TEXT)
                 )
             else:
                 # メンタリングの頻度を聞く
                 reply_message_list.append(TemplateMessage(
-                    alt_text=f"メンタリングの頻度を選択してください",
+                    alt_text=mentor.RESPONSE_ASK_INTERVAL,
                     template=ButtonsTemplate(
-                        text=f"メンタリングの頻度を選択してください",
+                        text=mentor.RESPONSE_ASK_INTERVAL,
                         actions=[
                             MessageAction(
                                 label="毎日",
@@ -178,12 +188,12 @@ def registration_controller(
         elif saved_status == STATUS.INPUT_INTERVAL:
             if input_text not in ["1", "3", "7"]:
                 reply_message_list.append(TextMessage(
-                    text="上のボタンからメンタリングの頻度を選択してください")
+                    text=mentor.RESPONSE_REQUEST_SELECT)
                 )
             else:
                 # 短期目標を聞く
                 reply_message_list.append(TextMessage(
-                    text=f"{input_text}日後までの短期目標を入力してください")
+                    text=mentor.RESPONSE_ASK_TARGET)
                 )
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_TARGET.name
@@ -194,7 +204,7 @@ def registration_controller(
         elif saved_status == STATUS.INPUT_TARGET:
             if input_text == "":
                 reply_message_list.append(TextMessage(
-                    text=f'{saved_data.data["interval_days"]}日後までの短期目標を入力してください')
+                    text=mentor.RESPONSE_REQUEST_TEXT)
                 )
             else:
                 # 状態を代入
@@ -208,10 +218,14 @@ def registration_controller(
                     f'メンタリングの頻度: {saved_data.data["interval_days"]}',
                     f'{saved_data.data["interval_days"]}日後までの目標: {saved_data.data["target"]}'
                 ])
+                reply_text_build = mentor.build(
+                    mentor.RESPONSE_CONFIRM_REGISTRATION,
+                    {"DATA": reply_text}
+                )
                 reply_message_list.append(TemplateMessage(
-                    alt_text=f"下記の内容でよろしいですか？\n{reply_text}",
+                    alt_text=reply_text_build,
                     template=ButtonsTemplate(
-                        text=f"下記の内容でよろしいですか？\n{reply_text}",
+                        text=reply_text_build,
                         actions=[
                             MessageAction(
                                 label="確定する",
@@ -243,7 +257,7 @@ def registration_controller(
                     user,
                     schemas.UserConfigCreate(
                         interval_days=saved_data.data["interval_days"],
-                        character_id=saved_data.data["character_id"]
+                        mentor_id=saved_data.data["mentor_id"]
                     )
                 )
 
@@ -260,22 +274,22 @@ def registration_controller(
                 # cacheを削除
                 delete_saved_data(line_id)
                 reply_message_list.append(TextMessage(
-                    text="登録が完了しました")
+                    text=mentor.RESPONSE_COMPLETE_REGISTRATION)
                 )
             elif input_text == "修正する":
                 # 氏名の入力に戻るか確認
                 reply_message_list.append(TemplateMessage(
-                    alt_text=f"氏名の入力にもどりますが、本当によろしいですか？",
+                    alt_text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
                     template=ButtonsTemplate(
-                        text=f"氏名の入力にもどりますが、本当によろしいですか？",
+                        text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
                         actions=[
                             MessageAction(
                                 label="やり直す",
                                 text="やり直す"
                             ),
                             MessageAction(
-                                label="確認にもどる",
-                                text="確認にもどる"
+                                label="前の画面にもどる",
+                                text="前の画面にもどる"
                             )
                         ]
                     )
@@ -285,7 +299,7 @@ def registration_controller(
                 set_saved_data(line_id, saved_data)
             else:
                 reply_message_list.append(TextMessage(
-                    text="上のボタンから選択してください")
+                    text=mentor.RESPONSE_REQUEST_SELECT)
                 )
 
         # 氏名の入力に戻るか確認をしていた場合
@@ -293,12 +307,13 @@ def registration_controller(
             if input_text == "やり直す":
                 # 氏名を聞く
                 reply_message_list.append(TextMessage(
-                    text="氏名を入力してください"
+                    text=mentor.RESPONSE_ASK_NAME
                 ))
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_NAME.name
                 set_saved_data(line_id, saved_data)
-            elif input_text == "確認にもどる":
+
+            elif input_text == "前の画面にもどる":
                 # 状態を代入
                 saved_data.state = STATUS.CONFIRM_REGISTRATION.name
 
@@ -309,10 +324,14 @@ def registration_controller(
                     f'メンタリングの頻度: {saved_data.data["interval_days"]}',
                     f'{saved_data.data["interval_days"]}日後までの目標: {saved_data.data["target"]}'
                 ])
+                reply_text_build = mentor.build(
+                    mentor.RESPONSE_CONFIRM_REGISTRATION,
+                    {"DATA": reply_text}
+                )
                 reply_message_list.append(TemplateMessage(
-                    alt_text=f"下記の内容でよろしいですか？\n{reply_text}",
+                    alt_text=reply_text_build,
                     template=ButtonsTemplate(
-                        text=f"下記の内容でよろしいですか？\n{reply_text}",
+                        text=reply_text_build,
                         actions=[
                             MessageAction(
                                 label="確定する",
@@ -329,7 +348,7 @@ def registration_controller(
                 set_saved_data(line_id, saved_data)
             else:
                 reply_message_list.append(TextMessage(
-                    text="上のボタンから選択してください")
+                    text=mentor.RESPONSE_REQUEST_SELECT)
                 )
 
     return reply_message_list

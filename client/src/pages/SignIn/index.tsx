@@ -21,12 +21,14 @@ const Page: React.FC = () => {
         label={'mail'}
         value={email}
         setValue={setEmail}
+        type={'text'}
       />
       <Input
         placeHolder={'plese input password'}
         label={'password'}
         value={password}
         setValue={setPassword}
+        type={'password'}
       />
       <Button
         type={'Fill'}

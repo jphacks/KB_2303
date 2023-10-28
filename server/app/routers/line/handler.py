@@ -28,7 +28,8 @@ from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
 from .controller.registration import registration_controller
 from .data import MENTORS
-from .util.session import get_saved_data, delete_saved_data
+from .model.state import STATUS
+from .util.session import get_saved_data, delete_saved_data, set_saved_data
 
 # define router
 router = APIRouter(
@@ -155,19 +156,29 @@ def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
-            msg_api.push_message(
-                PushMessageRequest(
-                    to=line_id,
-                    messages=[
-                        TextMessage(
-                            text=mentor.RESPONSE_PUSH_START
-                        ),
-                        TextMessage(
-                            text=mentor.RESPONSE_PUSH_HEARING
-                        )
-                    ]
+
+            saved_data = get_saved_data(line_id)
+
+            if saved_data is None:
+                msg_api.push_message(
+                    PushMessageRequest(
+                        to=line_id,
+                        messages=[
+                            TextMessage(
+                                text=mentor.RESPONSE_PUSH_START
+                            ),
+                            TextMessage(
+                                text=mentor.RESPONSE_PUSH_HEARING
+                            )
+                        ]
+                    )
                 )
-            )
+                set_saved_data(line_id, LINECommunicationStateSchema(
+                    state=STATUS.INPUT_FEELING.name,
+                    data={
+                        "report_id": report.id
+                    }
+                ))
 
 
 @router.on_event("startup")

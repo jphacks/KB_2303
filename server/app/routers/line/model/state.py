@@ -13,3 +13,6 @@ class STATUS(Enum):
     INPUT_TARGET = 10601  # 短期目標を聞く
     CONFIRM_REGISTRATION = 10701  # 登録内容を確認
     CONFIRM_RETURN_TO_INPUT_NAME = 10702  # 氏名の入力に戻るか確認
+
+    # 2xxxx: 定期メンタリング
+    INPUT_FEELING = 20101  # メンタリング開始・所感ヒアリング

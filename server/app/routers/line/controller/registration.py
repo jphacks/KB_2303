@@ -7,7 +7,7 @@ from linebot.v3.messaging import (
 
 from crud.schemas import LINECommunicationStateSchema
 from db import schemas
-from db.crud import user as user_crud
+from db.crud import user as user_crud, group as group_crud
 from db.crud.group import get_by_user_invite_token
 from routers.line.model.state import STATUS
 from routers.line.util.session import (
@@ -273,6 +273,13 @@ def registration_controller(
                         interval_days=saved_data.data["interval_days"],
                         mentor_id=saved_data.data["mentor_id"]
                     )
+                )
+
+                # グループに登録
+                group_crud.join_user(
+                    db,
+                    group_crud.get(db, saved_data.data["group_id"]),
+                    user
                 )
 
                 scheduled_hearing_date = datetime.now() + timedelta(days=saved_data.data["interval_days"])

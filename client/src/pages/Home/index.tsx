@@ -2,12 +2,21 @@ import { useNavigate } from 'react-router'
 import { Button } from '../../components/Button'
 import { signout } from '../../utils/api/signout'
 import { Root } from './Styles'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchGroup } from '../../utils/api/fetchGroup'
 import { fetchGroupUsers } from '../../utils/api/fetchGroupUsers'
+import { Result } from 'result-type-ts'
+import { Group } from '../../models/Group'
+import { GroupUser } from '../../models/GroupUser'
 
 const Page: React.FC = () => {
   const navi = useNavigate()
+
+  const [group, setGroup] = useState<Result<Group>>(Result.failure('INIT'))
+  const [groupUsers, setGroupUsers] = useState<Result<GroupUser[]>>(
+    Result.failure('INIT')
+  )
+
   const signOut = () => {
     signout().then(() => {
       navi('/sign-in')
@@ -15,9 +24,36 @@ const Page: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchGroup().then(console.log)
-    fetchGroupUsers().then(console.log)
+    fetchGroup().then((data) => {
+      console.log('group', data)
+      const g = {
+        id: data.id,
+        name: data.name,
+        user_invite_token: data.user_invite_token,
+        admin_invite_token: data.admin_invite_token,
+        created_at: data.created_at,
+      }
+      setGroup(Result.success(g))
+    })
+    fetchGroupUsers().then((data) => {
+      console.log('group users', data)
+      const d = data.map((u: any) => {
+        return {
+          id: u.id,
+          name: u.name,
+          joined_at: u.joined_at,
+        }
+      })
+      setGroupUsers(d)
+    })
   }, [])
+
+  if (group.isFailure) {
+    return <div>GROUP GET FAILER</div>
+  }
+  if (groupUsers.isFailure) {
+    return <div>GROUP USERS GET FAILER</div>
+  }
 
   return (
     <Root>

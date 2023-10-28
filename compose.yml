@@ -24,7 +24,7 @@ services:
     ports:
       - 127.0.0.1:5173:80
     volumes:
-      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./dockerfiles/nginx/:/etc/nginx/conf.d/
       - ./client/dist:/var/www
     depends_on:
       - server

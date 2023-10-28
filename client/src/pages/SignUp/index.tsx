@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import { signup } from '../../utils/api/signup'
 import { createGroup } from '../../utils/api/createGroup'
 import { joinGroup } from '../../utils/api/joinGroup'
+import { loginCheck } from '../../utils/api/loginCheck'
 
 const Page: React.FC = () => {
   const [step, setStep] = useState(1)
@@ -19,11 +20,13 @@ const Page: React.FC = () => {
   const sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
-  
+
   const signUp = () => {
     signup(name, email, password).then(() => {
       sleep(200).then(() => {
         if (groupCode === '') {
+          loginCheck().then(console.log)
+
           createGroup(groupName)
             .then(() => {
               console.log('create group')

@@ -3,7 +3,8 @@ import logging
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from routers import root, sample, line
+from routers import sample, line
+from routers.api import main as api_main
 from util.env import get_env
 
 # logger config
@@ -29,11 +30,12 @@ app.mount("/static", StaticFiles(directory="/app/static"), name="static")
 
 # add routers
 app.include_router(
-    root.router
-)
-app.include_router(
     sample.router
 )
 app.include_router(
     line.router
+)
+app.include_router(
+    api_main.router,
+    prefix="/api"
 )

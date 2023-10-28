@@ -120,6 +120,7 @@ async def handle_callback(
         # event.sourceがuserでない場合は処理しない
         if ev.source.type != "user":
             continue
+
         # line_idを取得
         source: UserSource = ev.source
         line_id = source.user_id
@@ -145,12 +146,11 @@ async def handle_callback(
                     state=STATUS.INPUT_GROUP_ID.name,
                     data={}
                 ))
-                continue
+
             else:
                 reply_message_list.append(TextMessage(
                     text="「はじめる」と送ってください")
                 )
-                continue
 
         # 初期状態でない場合
         # 状態を取得
@@ -165,7 +165,7 @@ async def handle_callback(
                 reply_message_list.append(TextMessage(
                     text="グループIDが間違っているようです。もう一度正しいものを送ってください。")
                 )
-                continue
+
             # グループが存在した場合、グループに参加するか確認する
             else:
                 reply_message_list.append(TextMessage(
@@ -175,7 +175,7 @@ async def handle_callback(
                 saved_data.state = STATUS.CONFIRM_GROUP_JOIN.name
                 saved_data.data["group_id"] = group.id
                 set_saved_data(line_id, saved_data)
-                continue
+
 
         # グループに参加するか確認していた場合
         elif saved_status == STATUS.CONFIRM_GROUP_JOIN:
@@ -188,7 +188,7 @@ async def handle_callback(
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_NAME.name
                 set_saved_data(line_id, saved_data)
-                continue
+
             # 参加しない場合
             elif input_text == "いいえ":
                 # 再入力を求める
@@ -199,14 +199,13 @@ async def handle_callback(
                 saved_data.state = STATUS.INPUT_GROUP_ID.name
                 del saved_data.data["group_id"]
                 set_saved_data(line_id, saved_data)
-                continue
+
             # どちらでもない場合
             else:
                 # グループに参加するか確認する
                 reply_message_list.append(TextMessage(
                     text="「はい」か「いいえ」でお答えください。")
                 )
-                continue
 
         # テスト
         reply_message_list.append(TextMessage(

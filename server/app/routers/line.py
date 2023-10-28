@@ -79,30 +79,28 @@ async def handle_callback(request: Request):
                 ReplyMessageRequest(
                     reply_token=ev.reply_token,
                     messages=[
-                        TextMessage(text="はじめると送ってください"),
+                        TextMessage(text="はじめると送ってください(follow)"),
                     ]
                 )
             )
 
-            while True:
-                if ev.message.text == "はじめる":
-                    await line_bot_api.reply_message(
-                        ReplyMessageRequest(
-                            reply_token=ev.reply_token,
-                            messages=[
-                                TextMessage(text="success"),
-                            ]
-                        )
-                    )
-                    break
-                else:
-                    await line_bot_api.reply_message(
-                        ReplyMessageRequest(
-                            reply_token=ev.reply_token,
-                            messages=[
-                                TextMessage(text="はじめると送ってください"),
-                            ]
-                        )
-                    )
+        elif ev.message.text == "はじめる":
+            await line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=ev.reply_token,
+                    messages=[
+                        TextMessage(text="success(はじめる)"),
+                    ]
+                )
+            )
+        else:
+            await line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=ev.reply_token,
+                    messages=[
+                        TextMessage(text="はじめると送ってください(else)"),
+                    ]
+                )
+            )
 
     return 'OK'

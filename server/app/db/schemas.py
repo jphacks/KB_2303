@@ -77,9 +77,32 @@ class UserBase(BaseModel):
     name: str
 
 
+class UserCreate(UserBase):
+    line_id: str
+
+
 class User(UserBase):
     id: int
     line_id: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class UserConfigBase(BaseModel):
+    user_id: int
+    interval_days: int
+    character_id: int
+
+
+class UserConfigCreate(UserConfigBase):
+    pass
+
+
+class UserConfig(UserConfigBase):
+    id: int
     created_at: datetime
     updated_at: datetime
 

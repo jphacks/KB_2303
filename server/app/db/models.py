@@ -141,22 +141,3 @@ class Report(Base):
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
-
-
-class Character(Base):
-    __tablename__ = "character"
-
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-
-    name = Column(String, nullable=False)
-
-    # アイコン画像をbase64で保存
-    icon = Column(String, nullable=False)
-    # 立ち絵をbase64で保存
-    image = Column(String, nullable=False)
-
-    # prompt
-    prompt = Column(String, nullable=False)
-
-    created_at = Column(DateTime, default=datetime.now(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)

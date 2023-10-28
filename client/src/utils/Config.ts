@@ -1,3 +1,3 @@
 export const Config = {
-  ApiEndPoint: 'http://localhost/api',
+  ApiEndPoint: 'https://api.thiscode.proj.ukwhatn.com/api',
 }

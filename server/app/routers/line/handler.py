@@ -139,8 +139,9 @@ async def handle_callback(
         )
 
 
-def send_mentoring_start_messages(db=get_db()):
-    reports = report_crud.get_need_to_process_scheduled_reports(db)
+def send_mentoring_start_messages():
+    with get_db() as db:
+        reports = report_crud.get_need_to_process_scheduled_reports(db)
 
     for report in reports:
         user = report.user

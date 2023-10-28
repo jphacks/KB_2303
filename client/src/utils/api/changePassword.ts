@@ -8,6 +8,7 @@ export const changePassword = async (
 ) => {
   const data = await fetch(`${Config.ApiEndPoint}/admin/`, {
     method: 'PATCH',
+    credentials: 'include',
     headers: {
       accept: 'application/json',
       'Content-Type': 'application/json',

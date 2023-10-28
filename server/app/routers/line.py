@@ -211,7 +211,8 @@ async def handle_callback(
 
         # テスト
         reply_message_list.append(TextMessage(
-            text=f"入力: {input_text}, ステータス: {saved_status.name}, データ: {saved_data.data}"
+            text=f"入力: {input_text}, ステータス: {saved_data.state if saved_data is not None else 'None'}, "
+                 f"データ: {saved_data.data if saved_data is not None else 'None'}"
         ))
 
         # reply_message_listを送信

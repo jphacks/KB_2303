@@ -21,6 +21,8 @@ const Page: React.FC = () => {
         createGroup(groupName).then(() => {
           console.log('create group')
           navi('/')
+        }).catch((e) => {
+          console.error('catch create group error', e)
         })
       } else {
         joinGroup(groupCode).then(() => {

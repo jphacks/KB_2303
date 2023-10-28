@@ -58,7 +58,8 @@ services:
       - ./server/db/init:/docker-entrypoint-initdb.d
     restart: always
     ports:
-      - "127.0.0.1:5432:5432"
+      #- "127.0.0.1:5432:5432"
+      - "5432:5432"  # TODO: デバッグ終了後に戻す
     healthcheck:
       test: pg_isready -U postgres
       interval: 2s

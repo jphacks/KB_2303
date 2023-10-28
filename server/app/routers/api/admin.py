@@ -2,10 +2,10 @@ from fastapi import APIRouter, Request, Response, Depends
 from sqlalchemy.orm import Session
 
 from crud import SessionCrud
-from crud.schema import AdminSessionSchema
+from crud.schemas import AdminSessionSchema
+from db import schemas
 from db.crud import admin as admin_crud
 from db.session import get_db
-from db import schemas
 
 # define router
 router = APIRouter(

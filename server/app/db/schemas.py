@@ -69,35 +69,17 @@ class Group(GroupBase):
         orm_mode = True
 
 
-class GroupConfigBase(BaseModel):
-    interval_days: int
-    group_id: int
-
-
-class GroupConfigCreate(GroupConfigBase):
-    pass
-
-
-class GroupConfig(GroupConfigBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
+class GroupAdminJoin(BaseModel):
+    admin_invite_token: str
 
 
 class UserBase(BaseModel):
     name: str
-    line_id: str
-
-
-class UserCreate(UserBase):
-    pass
 
 
 class User(UserBase):
     id: int
+    line_id: str
     created_at: datetime
     updated_at: datetime
 
@@ -105,87 +87,9 @@ class User(UserBase):
         orm_mode = True
 
 
-class UserConfigBase(BaseModel):
-    interval_days: int
-    character_id: int
-    user_id: int
-
-
-class UserConfigCreate(UserConfigBase):
-    pass
-
-
-class UserConfig(UserConfigBase):
+class UserPublic(UserBase):
     id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
 
 
-class GroupAdminBase(BaseModel):
-    group_id: int
-    admin_id: int
-
-
-class GroupAdminCreate(GroupAdminBase):
-    pass
-
-
-class GroupAdmin(GroupAdminBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
-
-
-class GroupUserBase(BaseModel):
-    group_id: int
-    user_id: int
-
-
-class GroupUserCreate(GroupUserBase):
-    pass
-
-
-class GroupUser(GroupUserBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
-
-
-class ReportBase(BaseModel):
-    user_id: int
-    next_target: str
-    next_date: datetime
-    is_initial: bool
-
-
-class InitialReportCreate(ReportBase):
-    pass
-
-
-class ReportCreate(ReportBase):
-    emotion: float
-    impression: str
-    impression_feedback: str
-    is_achieved: bool
-    reason: str
-    reason_feedback: str
-    problem: str
-    problem_feedback: str
-
-
-class Report(ReportBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
+class GroupUserPublic(UserPublic):
+    joined_at: datetime

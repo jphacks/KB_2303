@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from . import session, admin
+
+from . import session, admin, group
 
 # define router
 router = APIRouter()
@@ -12,4 +13,8 @@ router.include_router(
 router.include_router(
     session.router,
     prefix="/session"
+)
+router.include_router(
+    group.router,
+    prefix="/group"
 )

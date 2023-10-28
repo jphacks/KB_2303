@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '../../components/Input'
 import { Root } from './Styles'
 import { Button } from '../../components/Button'
@@ -8,21 +8,7 @@ const Page: React.FC = () => {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    fetch(`${Config.ApiEndPoint}/admin/`, {
-      headers: {
-        accept: 'application/json',
-      },
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        console.log({ data })
-      })
-      .catch(console.error)
-  }, [])
-
   const signIn = () => {
-    console.log('sign-in')
     fetch(`${Config.ApiEndPoint}/session/`, {
       method: 'POST',
       headers: {

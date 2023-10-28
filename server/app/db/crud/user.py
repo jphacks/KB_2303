@@ -35,7 +35,10 @@ def create_config(db: Session, user: models.User, config: schemas.UserConfigCrea
 
 
 def create_report(db: Session, user: models.User, report: schemas.ScheduledReport) -> models.Report:
+    existing_reports = get_reports(db, user)
+
     db_report = models.Report(
+        no=len(existing_reports) + 1,
         user_id=user.id,
         target=report.target,
         scheduled_hearing_date=report.scheduled_hearing_date

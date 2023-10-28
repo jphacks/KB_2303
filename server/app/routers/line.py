@@ -2,6 +2,7 @@ import os
 import sys
 
 from fastapi import Request, APIRouter, HTTPException
+from enum import Enum, auto
 
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.messaging import (
@@ -21,6 +22,37 @@ from linebot.v3.webhooks import (
 from linebot.models import (
     TextSendMessage
 )
+
+# TODO
+# ユーザの情報を取得
+
+
+def get_user(line_id: str):
+    # id,名前,グループid
+    return {"id": "0",
+            "name": "test",
+            "group_id": "0"
+            }
+
+# TODO
+# ユーザの詳細情報を取得
+
+
+def get_user_config(user_id: str):
+    # userConfigからそれぞれ取得
+    return {"character_id": "0",
+            "intervel": "0",
+            "goal": "something goal text"
+            }
+
+# TODO
+# ユーザ情報の登録状況
+
+
+def get_config_registration_status(line_id: str):
+    # lineのidからユーザの登録状況のEnumの値を返して欲しい
+    return CONFIG_REGISTRATION_STATUS.NO_PROCESS
+
 
 # define router
 router = APIRouter(
@@ -47,6 +79,21 @@ line_bot_api = AsyncMessagingApi(async_api_client)
 parser = WebhookParser(channel_secret)
 
 
+class CONFIG_REGISTRATION_STATUS(Enum):
+    NO_PROCESS = auto()  # ユーザの登録処理が走っていない状態
+    START = auto()  # ユーザの登録処理開始
+    ID_SUCCESS = auto()  # ユーザIDの登録がされた状態
+    GROUP_SEARCH_SUCCESS = auto()  # 正しいグループIDが入力された時
+    GROUP_SEARCH_FAIL = auto()  # 誤ったグループIDが入力された時
+    GROUP_JOIN_SUCCESS = auto()  # グループへの参加が完了した状態
+    CHARACTER_CHOICE_SUCCESS = auto()  # キャラクター選択が完了した状態
+    NAME_SUCCESS = auto()  # 氏名の登録が完了した状態
+    GOAL_SUCCESS = auto()  # 目標の設定が完了した状態
+    INTERVAL_SUCCESS = auto()  # インターバルの設定が成功した時
+    INTERVAL_FAIL = auto()  # インターバルの設定が失敗した時
+    TARGET_SUCCESS = auto()  # 短期目標の設定が完了した時
+
+
 @router.post("/callback")
 async def handle_callback(request: Request):
     signature = request.headers['X-Line-Signature']
@@ -65,29 +112,18 @@ async def handle_callback(request: Request):
             continue
         if not isinstance(ev.message, TextMessageContent):
             continue
+        line_id = ev.source.user_id
+        # ユーザの登録情報を取得(どこまで入力中か)
+        user_info = get_user(line_id)
+        reply_message_list = []
 
-        # 友達追加されたとき
-        # これはGUIで設定する
-        # if ev.type == "follow":
-        #     await line_bot_api.reply_message(
-        #         ReplyMessageRequest(
-        #             reply_token=ev.reply_token,
-        #             messages=[
-        #                 TextMessage(text="はじめると送ってください(follow)"),
-        #             ]
-        #         )
-        #     )
-
+        status = get_config_registration_status()
         if ev.message.text == "はじめる":
-            await line_bot_api.reply_message(
-                ReplyMessageRequest(
-                    reply_token=ev.reply_token,
-                    messages=[
-                        TextMessage(text="success(はじめる)"),
-                    ]
-                )
-            )
-        else:
+            reply_message_list.append(TextMessage(
+                text="GroupIDがあれば入力してください。\nなければなしと送信してください。"))
+
+        # ユーザが未登録andはじめると送られていない
+        if True:
             await line_bot_api.reply_message(
                 ReplyMessageRequest(
                     reply_token=ev.reply_token,
@@ -96,5 +132,13 @@ async def handle_callback(request: Request):
                     ]
                 )
             )
+
+        await line_bot_api.reply_message(
+            ReplyMessageRequest(
+                reply_token=ev.reply_token,
+                messages=reply_message_list
+            )
+        )
+        return 'OK'
 
     return 'OK'

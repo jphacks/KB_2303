@@ -19,6 +19,16 @@ services:
       - "127.0.0.1:6006:6006"
     command: npm run storybook
 
+  nginx:
+    image: nginx
+    ports:
+      - 127.0.0.1:80:80
+    volumes:
+      - ./dockerfiles/nginx/:/etc/nginx/conf.d/
+      - ./client/dist:/var/www
+    depends_on:
+      - server
+
   server:
     container_name: server
     build:
@@ -47,6 +57,8 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./server/db/init:/docker-entrypoint-initdb.d
     restart: always
+    ports:
+      - "127.0.0.1:5432:5432"
     healthcheck:
       test: pg_isready -U postgres
       interval: 2s

@@ -8,7 +8,9 @@ from linebot.v3.exceptions import (
 )
 from linebot.v3.messaging import (
     AsyncApiClient,
+    ApiClient,
     AsyncMessagingApi,
+    MessagingApi,
     Configuration,
     TextMessage,
     ReplyMessageRequest, PushMessageRequest
@@ -49,7 +51,11 @@ configuration = Configuration(
 )
 
 async_api_client = AsyncApiClient(configuration)
-line_bot_api = AsyncMessagingApi(async_api_client)
+async_msg_api = AsyncMessagingApi(async_api_client)
+
+api_client = ApiClient(configuration)
+msg_api = MessagingApi(api_client)
+
 parser = WebhookParser(channel_secret)
 
 
@@ -132,7 +138,7 @@ async def handle_callback(
             )
 
         # reply_message_listを送信
-        await line_bot_api.reply_message(
+        await async_msg_api.reply_message(
             ReplyMessageRequest(
                 reply_token=ev.reply_token,
                 messages=reply_message_list
@@ -140,7 +146,7 @@ async def handle_callback(
         )
 
 
-async def send_mentoring_start_messages():
+def send_mentoring_start_messages():
     with SessionLocal() as db:
         reports = report_crud.get_need_to_process_scheduled_reports(db)
 
@@ -149,7 +155,7 @@ async def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
-            await line_bot_api.push_message(
+            msg_api.push_message(
                 PushMessageRequest(
                     to=line_id,
                     messages=[

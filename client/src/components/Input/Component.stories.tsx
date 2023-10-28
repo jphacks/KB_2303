@@ -20,6 +20,7 @@ export const Default: Story = {
     value: '',
     label: 'ラベル',
     placeHolder: '入力してください',
+    type: 'text',
   },
 }
 export const Inputed: Story = {
@@ -27,6 +28,15 @@ export const Inputed: Story = {
     value: '入力しました',
     label: '名前',
     placeHolder: '',
+    type: 'text',
+  },
+}
+export const Password: Story = {
+  args: {
+    value: '入力しました',
+    label: 'パスワード',
+    placeHolder: '',
+    type: 'password',
   },
 }
 export const Error: Story = {
@@ -35,5 +45,6 @@ export const Error: Story = {
     label: '名前',
     placeHolder: '名前を入力してください',
     error: '名前が入力されていません。',
+    type: 'text',
   },
 }

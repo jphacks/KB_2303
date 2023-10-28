@@ -8,7 +8,9 @@ from linebot.v3.exceptions import (
 )
 from linebot.v3.messaging import (
     AsyncApiClient,
+    ApiClient,
     AsyncMessagingApi,
+    MessagingApi,
     Configuration,
     TextMessage,
     ReplyMessageRequest, PushMessageRequest
@@ -26,7 +28,8 @@ from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
 from .controller.registration import registration_controller
 from .data import MENTORS
-from .util.session import get_saved_data, delete_saved_data
+from .model.state import STATUS
+from .util.session import get_saved_data, delete_saved_data, set_saved_data
 
 # define router
 router = APIRouter(
@@ -49,7 +52,11 @@ configuration = Configuration(
 )
 
 async_api_client = AsyncApiClient(configuration)
-line_bot_api = AsyncMessagingApi(async_api_client)
+async_msg_api = AsyncMessagingApi(async_api_client)
+
+api_client = ApiClient(configuration)
+msg_api = MessagingApi(api_client)
+
 parser = WebhookParser(channel_secret)
 
 
@@ -132,7 +139,7 @@ async def handle_callback(
             )
 
         # reply_message_listを送信
-        await line_bot_api.reply_message(
+        await async_msg_api.reply_message(
             ReplyMessageRequest(
                 reply_token=ev.reply_token,
                 messages=reply_message_list
@@ -140,7 +147,7 @@ async def handle_callback(
         )
 
 
-async def send_mentoring_start_messages():
+def send_mentoring_start_messages():
     with SessionLocal() as db:
         reports = report_crud.get_need_to_process_scheduled_reports(db)
 
@@ -149,19 +156,29 @@ async def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
-            await line_bot_api.push_message(
-                PushMessageRequest(
-                    to=line_id,
-                    messages=[
-                        TextMessage(
-                            text=mentor.RESPONSE_PUSH_START
-                        ),
-                        TextMessage(
-                            text=mentor.RESPONSE_PUSH_HEARING
-                        )
-                    ]
+
+            saved_data = get_saved_data(line_id)
+
+            if saved_data is None:
+                msg_api.push_message(
+                    PushMessageRequest(
+                        to=line_id,
+                        messages=[
+                            TextMessage(
+                                text=mentor.RESPONSE_PUSH_START
+                            ),
+                            TextMessage(
+                                text=mentor.RESPONSE_PUSH_HEARING
+                            )
+                        ]
+                    )
                 )
-            )
+                set_saved_data(line_id, LINECommunicationStateSchema(
+                    state=STATUS.INPUT_FEELING.name,
+                    data={
+                        "report_id": report.id
+                    }
+                ))
 
 
 @router.on_event("startup")

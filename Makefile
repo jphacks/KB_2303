@@ -4,6 +4,9 @@ install:
 add:
 	docker compose run --rm client npm i ${PKGS}
 
+build:
+	docker compose build
+
 up:
 	docker compose up -d
 
@@ -21,3 +24,8 @@ generate:
 	
 build:
 	docker compose run --rm client npm run build
+revision:
+	 docker compose exec server /bin/bash -c "cd /db && alembic revision --autogenerate -m '${NAME}'"
+
+migrate:
+	 docker compose exec server /bin/bash -c "cd /db && alembic upgrade head"

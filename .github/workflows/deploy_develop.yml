@@ -1,8 +1,6 @@
-name: CI
+name: CD
 on:
   push:
-    branches: [ develop ]
-  pull_request:
     branches: [ develop ]
 jobs:
   deploy:
@@ -19,3 +17,8 @@ jobs:
           script: |
             cd this-code
             git pull origin develop
+            make build
+            make install
+            make down
+            make up
+            make migrate

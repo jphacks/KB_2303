@@ -1,21 +1,7 @@
-# -*- coding: utf-8 -*-
-
-#  Licensed under the Apache License, Version 2.0 (the "License"); you may
-#  not use this file except in compliance with the License. You may obtain
-#  a copy of the License at
-#
-#       https://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#  License for the specific language governing permissions and limitations
-#  under the License.
-
 import os
 import sys
 
-from fastapi import Request, FastAPI, HTTPException
+from fastapi import Request, APIRouter, HTTPException
 
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.messaging import (
@@ -32,7 +18,15 @@ from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent
 )
+from linebot.models import (
+    TextSendMessage
+)
 
+# define router
+router = APIRouter(
+    tags=["LINEBot"],
+    prefix="/line"
+)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -48,13 +42,12 @@ configuration = Configuration(
     access_token=channel_access_token
 )
 
-app = FastAPI()
 async_api_client = AsyncApiClient(configuration)
 line_bot_api = AsyncMessagingApi(async_api_client)
 parser = WebhookParser(channel_secret)
 
 
-@app.post("/callback")
+@router.post("/callback")
 async def handle_callback(request: Request):
     signature = request.headers['X-Line-Signature']
 
@@ -67,17 +60,37 @@ async def handle_callback(request: Request):
     except InvalidSignatureError:
         raise HTTPException(status_code=400, detail="Invalid signature")
 
-    for event in events:
-        if not isinstance(event, MessageEvent):
+    for ev in events:
+        if not isinstance(ev, MessageEvent):
             continue
-        if not isinstance(event.message, TextMessageContent):
+        if not isinstance(ev.message, TextMessageContent):
             continue
 
         await line_bot_api.reply_message(
             ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[TextMessage(text=event.message.text)]
+                reply_token=ev.reply_token,
+                messages=[TextMessage(text=ev.message.text)]
             )
         )
+
+        # 友達追加されたとき
+        if ev.type == "follow":
+            line_bot_api.reply_message(
+                ev.reply_token,
+                TextSendMessage(text="「はじめる」と送ってください")
+            )
+
+            while True:
+                if ev.message.text == "はじめる":
+                    line_bot_api.reply_message(
+                        ev.reply_token,
+                        TextSendMessage(text="success")
+                    )
+                    break
+                else:
+                    line_bot_api.reply_message(
+                        ev.reply_token,
+                        TextSendMessage(text="「はじめる」と送ってください")
+                    )
 
     return 'OK'

@@ -7,6 +7,8 @@ class AdminSessionSchema:
 
 class LINECommunicationStateSchema:
     state: str
+    data: dict
 
-    def __init__(self, state: str = None):
+    def __init__(self, state: str = None, data: dict = None):
         self.state = state
+        self.data = data

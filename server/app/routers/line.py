@@ -23,6 +23,19 @@ from linebot.models import (
     TextSendMessage
 )
 
+from crud.line_communication_state import LineCommunicationStateCrud
+from crud.schemas import LINECommunicationStateSchema
+
+with LineCommunicationStateCrud() as line_communication_state_crud:
+    state = line_communication_state_crud.get("LINE_ID")
+    state.data["key"]
+    state.state
+    line_communication_state_crud.set(
+        "LINE_ID",
+        LINECommunicationStateSchema(state="state", data={"key": "value"})
+    )
+    line_communication_state_crud.delete("LINE_ID")
+
 # define router
 router = APIRouter(
     tags=["LINEBot"],

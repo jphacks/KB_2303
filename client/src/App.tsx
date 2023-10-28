@@ -1,19 +1,22 @@
-import { Suspense, useEffect, useState } from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react'
+import {
+  BrowserRouter,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import { Router } from './utils/Router'
 import { Result } from 'result-type-ts'
-import { Config } from './utils/Config'
 import { Grid } from 'react-loader-spinner'
 import styled from '@emotion/styled'
 import { Color } from './utils/Color'
 import { loginCheck } from './utils/api/loginCheck'
 
+const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 function App() {
   const [user, setUser] = useState<Result<boolean>>(Result.failure('INIT'))
-
-  const sleep = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-  }
 
   useEffect(() => {
     sleep(500).then(() => {
@@ -45,14 +48,38 @@ function App() {
           />
         </Center>
       }>
-      <BrowserRouter>
-        <Router user={user} />
-      </BrowserRouter>
+      <Router
+        user={user}
+        redirect={(to: string) => <Redirect to={to} setUser={setUser} />}
+      />
     </Suspense>
   )
 }
 
 export default App
+
+const Redirect: React.FC<{
+  to: string
+  setUser: Dispatch<SetStateAction<Result<boolean>>>
+}> = ({ to, setUser }) => {
+  const navi = useNavigate()
+  useEffect(() => {
+    setUser(Result.failure('INIT'))
+    sleep(500).then(() => {
+      loginCheck().then((data) => {
+        if (data === null) {
+          setUser(Result.failure('NULL'))
+          navi('/sign-in')
+        } else {
+          setUser(Result.success(true))
+          navi('/')
+        }
+      })
+    })
+  }, [])
+
+  return <Navigate replace to={to} />
+}
 
 const Center = styled('div')`
   width: 100vw;

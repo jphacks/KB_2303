@@ -12,8 +12,7 @@ from linebot.v3.messaging import (
     Configuration,
     TextMessage,
     ReplyMessageRequest,
-    ButtonsTemplate,
-    TemplateMessage
+    TemplateMessage, ButtonsTemplate, MessageAction
 )
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.webhooks import (
@@ -177,16 +176,14 @@ async def handle_callback(
                         template=ButtonsTemplate(
                             text=f"{group.name}に参加しますか？",
                             actions=[
-                                {
-                                    "type": "message",
-                                    "label": "はい",
-                                    "text": "はい"
-                                },
-                                {
-                                    "type": "message",
-                                    "label": "いいえ",
-                                    "text": "いいえ"
-                                }
+                                MessageAction(
+                                    label="はい",
+                                    text="はい"
+                                ),
+                                MessageAction(
+                                    label="いいえ",
+                                    text="いいえ"
+                                )
                             ]
                         )
                     ))

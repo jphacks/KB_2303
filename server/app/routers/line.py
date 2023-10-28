@@ -75,22 +75,34 @@ async def handle_callback(request: Request):
 
         # 友達追加されたとき
         if ev.type == "follow":
-            line_bot_api.reply_message(
-                ev.reply_token,
-                TextSendMessage(text="「はじめる」と送ってください")
+            await line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=ev.reply_token,
+                    messages=[
+                        TextMessage(text="はじめると送ってください"),
+                    ]
+                )
             )
 
             while True:
                 if ev.message.text == "はじめる":
-                    line_bot_api.reply_message(
-                        ev.reply_token,
-                        TextSendMessage(text="success")
+                    await line_bot_api.reply_message(
+                        ReplyMessageRequest(
+                            reply_token=ev.reply_token,
+                            messages=[
+                                TextMessage(text="success"),
+                            ]
+                        )
                     )
                     break
                 else:
-                    line_bot_api.reply_message(
-                        ev.reply_token,
-                        TextSendMessage(text="「はじめる」と送ってください")
+                    await line_bot_api.reply_message(
+                        ReplyMessageRequest(
+                            reply_token=ev.reply_token,
+                            messages=[
+                                TextMessage(text="はじめると送ってください"),
+                            ]
+                        )
                     )
 
     return 'OK'

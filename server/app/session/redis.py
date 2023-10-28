@@ -18,10 +18,7 @@ class RedisCrud:
             return None
         return pickle.loads(data)
 
-    def set(self, key: str, value: any, expire: int = None):
-        if expire is not None:
-            return self.connect.set(key, pickle.dumps(value), ex=expire)
-
+    def set(self, key: str, value):
         return self.connect.set(key, pickle.dumps(value))
 
     def delete(self, key: str):

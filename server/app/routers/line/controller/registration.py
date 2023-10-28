@@ -21,16 +21,16 @@ from ..data.base import MentorBase
 def confirm_data(saved_data: LINECommunicationStateSchema):
     return "\n".join(list(map(str, [
         f'氏名:',
-        {saved_data.data["name"]},
+        saved_data.data["name"],
         "",
         f'目標:',
-        {saved_data.data["goal"]},
+        saved_data.data["goal"],
         "",
         f'メンタリングの頻度:',
         f'{saved_data.data["interval_days"]}日に1回',
         "",
         f'{saved_data.data["interval_days"]}日後までの目標:',
-        {saved_data.data["target"]}
+        saved_data.data["target"]
     ])))
 
 

@@ -36,4 +36,4 @@ if __name__ == "__main__":
 #role: system or user
 #content: メッセージの内容
 #例: [{"role": "system", "content": "Hello, how are you?"}, {"role": "user", "content": "I'm good. What are you up to?"}]
-#role は assistant:GPTによる返信 user:ユーザーとして対話 system:システムプロンプト が使える
+#role は assistant:GPTによる返信 user:ユーザーとして対話 system:システムプロンプト が使える 基本的にsystemを優先してくれる。assistantの必要性としては会話の流れを覚えておくことにある

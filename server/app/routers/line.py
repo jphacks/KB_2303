@@ -66,13 +66,6 @@ async def handle_callback(request: Request):
         if not isinstance(ev.message, TextMessageContent):
             continue
 
-        await line_bot_api.reply_message(
-            ReplyMessageRequest(
-                reply_token=ev.reply_token,
-                messages=[TextMessage(text=ev.message.text)]
-            )
-        )
-
         # 友達追加されたとき
         if ev.type == "follow":
             await line_bot_api.reply_message(

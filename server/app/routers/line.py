@@ -11,7 +11,9 @@ from linebot.v3.messaging import (
     AsyncMessagingApi,
     Configuration,
     TextMessage,
-    ReplyMessageRequest
+    ReplyMessageRequest,
+    ButtonsTemplate,
+    TemplateMessage
 )
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.webhooks import (
@@ -170,14 +172,28 @@ async def handle_callback(
 
                 # グループが存在した場合、グループに参加するか確認する
                 else:
-                    reply_message_list.append(TextMessage(
-                        text=f"グループ「{group.name}」に参加しますか？")
-                    )
+                    reply_message_list.append(TemplateMessage(
+                        alt_text=f"{group.name}に参加しますか？",
+                        template=ButtonsTemplate(
+                            text=f"{group.name}に参加しますか？",
+                            actions=[
+                                {
+                                    "type": "message",
+                                    "label": "はい",
+                                    "text": "はい"
+                                },
+                                {
+                                    "type": "message",
+                                    "label": "いいえ",
+                                    "text": "いいえ"
+                                }
+                            ]
+                        )
+                    ))
                     # 状態を更新
                     saved_data.state = STATUS.CONFIRM_GROUP_JOIN.name
                     saved_data.data["group_id"] = group.id
                     set_saved_data(line_id, saved_data)
-
 
             # グループに参加するか確認していた場合
             elif saved_status == STATUS.CONFIRM_GROUP_JOIN:

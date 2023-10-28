@@ -360,3 +360,4 @@ def registration_controller(
                 )
 
     return reply_message_list
+

@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", description="Adminユーザ作成")
 def create(
         response: Response,
         data: schemas.AdminCreate,
@@ -32,7 +32,7 @@ def create(
     return admin
 
 
-@router.get("/")
+@router.get("/", description="ログイン中Adminユーザ取得")
 async def get(
         request: Request,
         db: Session = Depends(get_db)
@@ -45,7 +45,7 @@ async def get(
     return admin_crud.get(db, session.admin_id)
 
 
-@router.patch("/")
+@router.patch("/", description="ログイン中Adminユーザ情報更新")
 async def update(
         request: Request,
         response: Response,

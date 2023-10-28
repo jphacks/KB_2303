@@ -126,7 +126,7 @@ class Report(Base):
     impression = Column(String, nullable=True)
     impression_feedback = Column(String, nullable=True)
 
-    is_achieved = Column(Boolean, default=False)
+    achieved_score = Column(Integer, default=False)
 
     reason = Column(String, nullable=True)
     reason_feedback = Column(String, nullable=True)

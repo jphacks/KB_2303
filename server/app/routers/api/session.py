@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, Response, Depends
 from sqlalchemy.orm import Session
 
-from crud.session import SessionCrud
 from crud.schemas import AdminSessionSchema
+from crud.session import SessionCrud
+from db import schemas
 from db.crud import admin as admin_crud
 from db.session import get_db
-from db import schemas
 
 # define router
 router = APIRouter(
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", description="Adminユーザログイン")
 def login(
         response: Response,
         data: schemas.AdminLogin,
@@ -34,7 +34,7 @@ def login(
     return admin
 
 
-@router.delete("/")
+@router.delete("/", description="Adminユーザログアウト")
 async def logout(
         request: Request,
         response: Response

@@ -29,3 +29,4 @@ class LineCommunicationStateCrud:
 
     def delete(self, line_id):
         self._delete(line_id)
+

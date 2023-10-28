@@ -25,6 +25,7 @@ def gptchat(json=None,text=None):
 def gptchatjson(json=None,text=None):
   return gptclient(json,text)
 
+#以下はテスト用の関数
 def loopcharactor():
   lastweekgoal="いいね表示プログラムの完成"
   systemprompt=f'''あなたはマネージャーとして一人の部下のプログラマーの進捗の定期報告をいまから口頭で受け取らなければなりません。報告がない場合は促します。報告項目としては以下を一つづつ聞いていきます。

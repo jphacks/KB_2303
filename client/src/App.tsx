@@ -6,12 +6,13 @@ import { Grid } from 'react-loader-spinner'
 import styled from '@emotion/styled'
 import { Color } from './utils/Color'
 import { loginCheck } from './utils/api/loginCheck'
+import { GroupUser } from './models/GroupUser'
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 function App() {
-  const [user, setUser] = useState<Result<boolean>>(Result.failure('INIT'))
+  const [user, setUser] = useState<Result<GroupUser>>(Result.failure('INIT'))
 
   useEffect(() => {
     sleep(500).then(() => {
@@ -20,7 +21,14 @@ function App() {
           if (data === null) {
             setUser(Result.failure('NULL'))
           } else {
-            setUser(Result.success(true))
+            setUser(
+              Result.success({
+                name: data.name,
+                id: data.id,
+                email: data.email,
+                updated_at: data.update_at,
+              })
+            )
           }
         })
         .catch(console.error)
@@ -55,7 +63,7 @@ export default App
 
 const Redirect: React.FC<{
   to: string
-  setUser: Dispatch<SetStateAction<Result<boolean>>>
+  setUser: Dispatch<SetStateAction<Result<GroupUser>>>
 }> = ({ to, setUser }) => {
   const navi = useNavigate()
   useEffect(() => {
@@ -66,7 +74,14 @@ const Redirect: React.FC<{
           setUser(Result.failure('NULL'))
           navi('/sign-in')
         } else {
-          setUser(Result.success(true))
+          setUser(
+            Result.success({
+              name: data.name,
+              id: data.id,
+              email: data.email,
+              updated_at: data.update_at,
+            })
+          )
           navi('/')
         }
       })

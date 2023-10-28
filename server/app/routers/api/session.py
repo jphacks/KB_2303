@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Response, Depends
 from sqlalchemy.orm import Session
 
 from crud.session import SessionCrud
-from crud.schema import AdminSessionSchema
+from crud.schemas import AdminSessionSchema
 from db.crud import admin as admin_crud
 from db.session import get_db
 from db import schemas

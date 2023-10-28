@@ -1,5 +1,6 @@
-from .redis import RedisCrud
 import secrets
+
+from .redis import RedisCrud
 
 
 class SessionCrud:
@@ -7,8 +8,6 @@ class SessionCrud:
         self.crud = RedisCrud(db=0)
 
         self.cookie_name = "sessionId"
-
-        self.crud.connect.expire(self.cookie_name, 60 * 60 * 24)
 
     def __enter__(self):
         return self
@@ -20,7 +19,8 @@ class SessionCrud:
         return self.crud.get(key)
 
     def _set(self, key, value):
-        return self.crud.set(key, value)
+        data = self.crud.set(key, value, expire=60 * 60 * 24)
+        return data
 
     def _delete(self, key):
         return self.crud.delete(key)

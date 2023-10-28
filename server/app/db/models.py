@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 
 from .connection import Base
 
@@ -13,6 +13,10 @@ class Admin(Base):
     name = Column(String, unique=False)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+
+    groups: Mapped["GroupAdmin"] = relationship(back_populates="admin")
+
+    group_admins: Mapped["GroupAdmin"] = relationship(back_populates="admin")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
@@ -27,6 +31,11 @@ class Group(Base):
     admin_invite_token = Column(String, unique=True, index=True)
     user_invite_token = Column(String, unique=True, index=True)
 
+    config: Mapped["GroupConfig"] = relationship(back_populates="group")
+
+    group_admins: Mapped["GroupAdmin"] = relationship(back_populates="group")
+    group_users: Mapped["GroupUser"] = relationship(back_populates="group")
+
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
 
@@ -35,7 +44,9 @@ class GroupConfig(Base):
     __tablename__ = "group_config"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+
     group_id = Column(Integer, ForeignKey("group.id"), index=True, unique=True)
+    group: Mapped[Group] = relationship(back_populates="config")
 
     interval_days = Column(Integer, nullable=False)
 
@@ -49,6 +60,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, unique=False)
     line_id = Column(String, unique=True, index=True)
+
+    group_users: Mapped["GroupUser"] = relationship(back_populates="user")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
@@ -73,7 +86,10 @@ class GroupAdmin(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     group_id = Column(Integer, ForeignKey("group.id"))
+    group = relationship("Group", back_populates="group_admins")
+
     admin_id = Column(Integer, ForeignKey("admin.id"))
+    admin = relationship("Admin", back_populates="group_admins")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)
@@ -84,7 +100,10 @@ class GroupUser(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     group_id = Column(Integer, ForeignKey("group.id"))
+    group = relationship("Group", back_populates="group_users")
+
     user_id = Column(Integer, ForeignKey("user.id"))
+    user = relationship("User", back_populates="group_users")
 
     is_deleted = Column(Boolean, default=False)
     is_banned = Column(Boolean, default=False)
@@ -99,7 +118,10 @@ class Report(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.id"), index=True)
 
-    emotion = Column(Float, nullable=True)
+    no = Column(Integer, nullable=False)
+
+    emotion_score = Column(Float, nullable=True)
+    emotion_magnitude = Column(Float, nullable=True)
 
     impression = Column(String, nullable=True)
     impression_feedback = Column(String, nullable=True)
@@ -112,11 +134,10 @@ class Report(Base):
     problem = Column(String, nullable=True)
     problem_feedback = Column(String, nullable=True)
 
-    next_target = Column(String, nullable=False)
+    target = Column(String, nullable=False)
 
-    is_initial = Column(Boolean, default=False)
-
-    next_date = Column(DateTime, nullable=False)
+    scheduled_hearing_date = Column(DateTime, nullable=False)
+    hearing_date = Column(DateTime, nullable=True)
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)

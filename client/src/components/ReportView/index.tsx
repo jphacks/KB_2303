@@ -20,7 +20,9 @@ export const ReportView: React.FC<Props> = ({
         {ownerName}さん第{report.no}回レポート
       </Text>
       <Label>
-        <AchievementMeter par={report.achieved_score} />
+        {report.achieved_score && (
+          <AchievementMeter par={report.achieved_score} />
+        )}
       </Label>
       <div>
         <Label>前回の目標</Label>

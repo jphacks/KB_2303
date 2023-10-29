@@ -73,8 +73,8 @@ class Gentani(MentorBase):
     RESPONSE_ASK_PROBLEM = "その他、なにか困っていることはありますか？"
 
     # 管理者ヘルプ要請ヒアリング
-    RESPONSE_ASK_HELP_REQUIRED = "問題解決のため、管理者にも助けを求めますか？\nご希望の場合は、直接ご連絡させていただきます。"
-    RESPONSE_HELP_NEEDED = "管理者に通知しましたので、ご連絡をお待ち下さい。\n折角の機会ですから、次の目標も設定しましょう。"
+    RESPONSE_ASK_HELP_REQUIRED = "問題解決のため、こちらから管理者にお声がけしたほうがよろしいでしょうか？\nご希望の場合は、管理者より直接ご連絡させていただきます。"
+    RESPONSE_HELP_NEEDED = "それでは、後ほど管理者に伝えておきます！\n折角の機会ですから、次の目標も設定しましょう。"
     RESPONSE_HELP_NOT_NEEDED = "何かお困りのことがあれば、いつでもお声がけください。"
 
     # 次回の目標ヒアリング
@@ -85,13 +85,13 @@ class Gentani(MentorBase):
     RESPONSE_CONFIRM_NEXT_TARGET = "以下の通り登録します。\n<<DATA>>"
 
     # 登録完了
-    RESPONSE_COMPLETE_MENTORING = "登録が完了しました。\n本日のメンタリングは以上となります、お疲れ様でした。引き続き頑張ってください。"
+    RESPONSE_COMPLETE_MENTORING = "登録が完了しました。\n本日のメンタリングは以上となります、お疲れ様でした！引き続き頑張っていきましょう！"
 
     # -----
     # 共通
     # -----
-    RESPONSE_REQUEST_BOOLEAN = "お手数ですが、「はい」か「いいえ」でお答えいただけますと幸いです。"
-    RESPONSE_REQUEST_SELECT = "お手数ですが、上のボタンからの選択をお願いします。"
-    RESPONSE_REQUEST_TEXT = "お手数ですが、テキストでの入力をお願いします。"
+    RESPONSE_REQUEST_BOOLEAN = "お手数ですが、「はい」か「いいえ」でお答えいただけますと幸いです！"
+    RESPONSE_REQUEST_SELECT = "お手数ですが、上のボタンからの選択をお願いします！"
+    RESPONSE_REQUEST_TEXT = "お手数ですが、テキストでの入力をお願いします！"
 
-    RESPONSE_INACTIVE = "次回のご連絡をお待ち下さい。"
+    RESPONSE_INACTIVE = "次回のご連絡をお待ち下さい！"

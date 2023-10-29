@@ -5,11 +5,13 @@ import { PositiveFaceIcon } from './PositiveFaceIcon'
 import { NegativeFaceIcon } from './NegativeFaceIcon'
 import { NeutralFaceIcon } from './NeutralFaceIcon'
 import { GroupIcon } from './GroupIcon'
+import { InfoIcon } from './InfoIcon'
 
 type IconType =
   | 'setting'
   | 'user'
   | 'group'
+  | 'info'
   | 'positive'
   | 'neutral'
   | 'negative'
@@ -29,6 +31,9 @@ export const Icon: React.FC<Props> = ({ children, color, size }) => {
   }
   if (children === 'group') {
     return <GroupIcon color={color} size={size} />
+  }
+  if (children === 'info') {
+    return <InfoIcon color={color} size={size} />
   }
   if (children === 'positive') {
     return <PositiveFaceIcon color={color} size={size} />

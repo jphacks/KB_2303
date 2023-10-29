@@ -1,13 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
-import {
-  IconView,
-  NameView,
-  Root,
-  UserListView,
-  UserView,
-  DateView,
-} from './Styles'
+import { IconView, NameView, UserListView, UserView, DateView } from './Styles'
 import { Avater } from '../Avater'
 
 type Props = {

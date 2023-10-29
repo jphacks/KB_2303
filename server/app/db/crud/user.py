@@ -52,7 +52,7 @@ def create_report(db: Session, user: models.User, report: schemas.ScheduledRepor
 
 
 def get_reports(db: Session, user: models.User) -> list[models.Report]:
-    res = db.query(models.Report).filter(models.Report.user_id == user.id).all()
+    res = db.query(models.Report).filter(models.Report.user_id == user.id).order(models.Report.no.dwc()).all()
 
     if res is None:
         return []

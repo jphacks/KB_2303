@@ -210,5 +210,5 @@ def send_mentoring_start_messages():
 @router.on_event("startup")
 async def startup():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(send_mentoring_start_messages, 'interval', minutes=10)
+    scheduler.add_job(send_mentoring_start_messages, 'interval', minutes=1)
     scheduler.start()

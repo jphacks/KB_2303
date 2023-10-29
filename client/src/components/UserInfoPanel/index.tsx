@@ -22,7 +22,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
       console.log('user', data)
       setReports(data.reports)
     })
-  }, [])
+  }, [user])
   return (
     <Root>
       <AvaterCard

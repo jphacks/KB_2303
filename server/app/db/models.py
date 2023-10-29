@@ -144,5 +144,6 @@ class Report(Base):
     scheduled_hearing_date = Column(DateTime, nullable=False)
     hearing_date = Column(DateTime, nullable=True)
 
+    help_required = Column(Boolean, nullable=True)
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)

@@ -65,7 +65,7 @@ def mentoring_controller(
         )
 
         # 返答を保存
-        saved_data.data["impression_response"] = chatgpt_response
+        saved_data.data["impression_feedback"] = chatgpt_response
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response
@@ -134,7 +134,7 @@ def mentoring_controller(
         )
 
         # 返答を保存
-        saved_data.data["reason_response"] = chatgpt_response
+        saved_data.data["reason_feedback"] = chatgpt_response
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response
@@ -177,7 +177,7 @@ def mentoring_controller(
         )
 
         # 返答を保存
-        saved_data.data["problem_response"] = chatgpt_response
+        saved_data.data["problem_feedback"] = chatgpt_response
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response
@@ -245,12 +245,12 @@ def mentoring_controller(
             # メンタリング完了
             report.hearing_date = datetime.now()
             report.impression = saved_data.data["impression"]
-            report.impression_response = saved_data.data["impression_response"]
+            report.impression_feedback = saved_data.data["impression_feedback"]
             report.achieved_score = saved_data.data["achieved_score"]
             report.reason = saved_data.data["reason"]
-            report.reason_response = saved_data.data["reason_response"]
+            report.reason_feedback = saved_data.data["reason_feedback"]
             report.problem = saved_data.data["problem"]
-            report.problem_response = saved_data.data["problem_response"]
+            report.problem_feedback = saved_data.data["problem_feedback"]
             report.help_required = saved_data.data["help_required"]
 
             report_crud.update(db, report)

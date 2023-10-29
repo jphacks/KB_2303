@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router'
 import { Center, Hr, PanelWrapper, Root, UserListWrapper, Text } from './Styles'
 import { useEffect, useState } from 'react'
 import { fetchGroup } from '../../utils/api/fetchGroup'
@@ -10,10 +9,9 @@ import { Navigater } from '../../components/Navigater'
 import { IllustImage } from '../../components/IllustImage'
 import { SettingPanel } from '../../components/SettingPanel'
 import { InfoPanel } from '../../components/InfoPanel'
+import { UserList } from '../../components/UserList'
 
 const Page: React.FC = () => {
-  const navi = useNavigate()
-
   const [panelType, setPanelType] = useState<'users' | 'setting' | 'info'>(
     'users'
   )
@@ -42,10 +40,10 @@ const Page: React.FC = () => {
         return {
           id: u.id,
           name: u.name,
-          joined_at: u.joined_at,
+          joined_at: new Date(u.joined_at),
         }
       })
-      setGroupUsers(d)
+      setGroupUsers(Result.success(d))
     })
   }, [])
 
@@ -71,10 +69,27 @@ const Page: React.FC = () => {
     },
   ]
 
+  console.log('g', groupUsers.value)
+
+  const userListViewInfo = groupUsers.value.map((u, i) => {
+    return {
+      name: u.name,
+      date: u.joined_at,
+      action: () => {
+        setUserInfo(groupUsers.value[i])
+      },
+    }
+  })
+
   return (
     <Root>
       <Navigater navigations={navigations} />
-      <UserListWrapper></UserListWrapper>
+      <UserListWrapper>
+        <UserList
+          userListViewInfo={userListViewInfo}
+          selectedItem={`${userInfo?.name}`}
+        />
+      </UserListWrapper>
       <Hr />
       <PanelWrapper>
         {panelType === 'setting' && <SettingPanel />}

@@ -8,7 +8,7 @@ export type Report = {
   emotion_magnitude: number
   impression: string
   impression_feedback: string
-  achieved_score: number
+  achieved_score: number | null
   reason: string
   reason_feedback: string
   problem: string

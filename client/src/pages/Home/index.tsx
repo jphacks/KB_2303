@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router'
 import { Center, Hr, PanelWrapper, Root, UserListWrapper, Text } from './Styles'
 import { useEffect, useState } from 'react'
 import { fetchGroup } from '../../utils/api/fetchGroup'
@@ -12,13 +11,11 @@ import { SettingPanel } from '../../components/SettingPanel'
 import { InfoPanel } from '../../components/InfoPanel'
 
 const Page: React.FC = () => {
-  const navi = useNavigate()
-
   const [panelType, setPanelType] = useState<'users' | 'setting' | 'info'>(
     'users'
   )
 
-  const [userInfo, setUserInfo] = useState<GroupUser | null>(null)
+  const [userInfo] = useState<GroupUser | null>(null)
   const [group, setGroup] = useState<Result<Group>>(Result.failure('INIT'))
   const [groupUsers, setGroupUsers] = useState<Result<GroupUser[]>>(
     Result.failure('INIT')

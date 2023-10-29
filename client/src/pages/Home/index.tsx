@@ -43,7 +43,7 @@ const Page: React.FC = () => {
           joined_at: u.joined_at,
         }
       })
-      setGroupUsers(d)
+      setGroupUsers(Result.success(d))
     })
   }, [])
 

@@ -87,12 +87,14 @@ const Page: React.FC = () => {
       <div style={{ position: 'fixed', top: 0, left: 0 }}>
         <Navigater navigations={navigations} />
       </div>
-      <UserListWrapper>
-        <UserList
-          userListViewInfo={userListViewInfo}
-          selectedItem={`${userInfo?.name}`}
-        />
-      </UserListWrapper>
+      <div style={{ position: 'fixed', top: 0, left: 80 }}>
+        <UserListWrapper>
+          <UserList
+            userListViewInfo={userListViewInfo}
+            selectedItem={`${userInfo?.name}`}
+          />
+        </UserListWrapper>
+      </div>
       <Hr />
       <PanelWrapper>
         {panelType === 'setting' && <SettingPanel />}

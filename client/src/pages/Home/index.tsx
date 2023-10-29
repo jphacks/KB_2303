@@ -84,17 +84,13 @@ const Page: React.FC = () => {
 
   return (
     <Root>
-      <div style={{ position: 'fixed', top: 0, left: 0 }}>
-        <Navigater navigations={navigations} />
-      </div>
-      <div style={{ position: 'fixed', top: 0, left: 80 }}>
-        <UserListWrapper>
-          <UserList
-            userListViewInfo={userListViewInfo}
-            selectedItem={`${userInfo?.name}`}
-          />
-        </UserListWrapper>
-      </div>
+      <Navigater navigations={navigations} />
+      <UserListWrapper>
+        <UserList
+          userListViewInfo={userListViewInfo}
+          selectedItem={`${userInfo?.name}`}
+        />
+      </UserListWrapper>
       <Hr />
       <PanelWrapper>
         {panelType === 'setting' && <SettingPanel groupId={group.value.user_invite_token} inviteId={group.value.admin_invite_token}/>}

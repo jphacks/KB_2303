@@ -6,6 +6,9 @@ export const Root = styled('div')`
   height: 100vh;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
 `
 
 export const UserListWrapper = styled('div')`

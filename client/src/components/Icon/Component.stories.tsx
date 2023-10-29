@@ -30,6 +30,13 @@ export const Group: Story = {
     size: 24,
   },
 }
+export const Info: Story = {
+  args: {
+    children: 'info',
+    color: Color.green.main,
+    size: 24,
+  },
+}
 export const Setting: Story = {
   args: {
     children: 'setting',

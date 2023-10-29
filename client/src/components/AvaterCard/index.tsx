@@ -22,7 +22,7 @@ type Props = {
   }[]
 }
 
-export const AdminCard: React.FC<Props> = ({
+export const AvaterCard: React.FC<Props> = ({
   name,
   createDate,
   selects,

@@ -5,8 +5,8 @@ export const EmptyInfo: React.FC = () => {
   return (
     <Root>
       <svg
-        width="480"
-        height="431"
+        width="240"
+        height="215"
         viewBox="0 0 480 431"
         fill="none"
         xmlns="http://www.w3.org/2000/svg">

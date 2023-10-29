@@ -19,5 +19,10 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    user: {
+      name: 'いなたつ',
+      id: '1',
+      joined_at: new Date(),
+    },
   },
 }

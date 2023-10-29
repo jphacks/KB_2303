@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router'
-import { signout } from '../../utils/api/signout'
 import { Center, Hr, PanelWrapper, Root, UserListWrapper, Text } from './Styles'
 import { useEffect, useState } from 'react'
 import { fetchGroup } from '../../utils/api/fetchGroup'
@@ -9,21 +8,21 @@ import { Group } from '../../models/Group'
 import { GroupUser } from '../../models/GroupUser'
 import { Navigater } from '../../components/Navigater'
 import { IllustImage } from '../../components/IllustImage'
+import { SettingPanel } from '../../components/SettingPanel'
+import { InfoPanel } from '../../components/InfoPanel'
 
 const Page: React.FC = () => {
   const navi = useNavigate()
+
+  const [panelType, setPanelType] = useState<'users' | 'setting' | 'info'>(
+    'users'
+  )
 
   const [userInfo, setUserInfo] = useState<GroupUser | null>(null)
   const [group, setGroup] = useState<Result<Group>>(Result.failure('INIT'))
   const [groupUsers, setGroupUsers] = useState<Result<GroupUser[]>>(
     Result.failure('INIT')
   )
-
-  const signOut = () => {
-    signout().then(() => {
-      navi('/sign-in')
-    })
-  }
 
   useEffect(() => {
     fetchGroup().then((data) => {
@@ -60,15 +59,15 @@ const Page: React.FC = () => {
   const navigations = [
     {
       icon: 'user',
-      action: () => console.log('user'),
+      action: () => setPanelType('users'),
     },
     {
       icon: 'setting',
-      action: () => console.log('setting'),
+      action: () => setPanelType('setting'),
     },
     {
       icon: 'info',
-      action: () => console.log('info'),
+      action: () => setPanelType('info'),
     },
   ]
 
@@ -78,13 +77,17 @@ const Page: React.FC = () => {
       <UserListWrapper></UserListWrapper>
       <Hr />
       <PanelWrapper>
-        {userInfo === null && (
+        {panelType === 'setting' && <SettingPanel />}
+        {panelType === 'info' && <InfoPanel />}
+
+        {panelType === 'users' && userInfo === null && (
           <Center>
             <IllustImage type={'EmptyInfo'} />
             <Text>受講者の情報が確認できます</Text>
           </Center>
         )}
-        {userInfo !== null && (
+
+        {panelType === 'users' && userInfo !== null && (
           <Center>
             <Text>受講者の情報をここに表示</Text>
           </Center>

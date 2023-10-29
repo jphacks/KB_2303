@@ -18,6 +18,7 @@ export const UserListWrapper = styled('div')`
 export const PanelWrapper = styled('div')`
   flex-grow: 1;
   height: 100vh;
+  overflow: scroll;
 `
 export const Hr = styled('div')`
   width: 1px;

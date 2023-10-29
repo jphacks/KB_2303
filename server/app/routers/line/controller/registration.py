@@ -108,20 +108,23 @@ def registration_controller(
             # 参加する場合
             if input_text == "はい":
                 # メンターを聞く
-                reply_message_list.append(CarouselTemplate(
-                    image_size="cover",
-                    columns=[
-                        CarouselColumn(
-                            thumbnail_image_url=f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}",
-                            title=mentor.NAME,
-                            text=mentor.PROMPT,
-                            actions=[
-                                MessageAction(
-                                    label="選択",
-                                    text=str(mentor.ID)
-                                )
-                            ]
-                        ) for mentor_id, mentor in MENTORS.items() if mentor_id > 0]
+                reply_message_list.append(TemplateMessage(
+                    alt_text=mentor.RESPONSE_ASK_MENTOR,
+                    template=CarouselTemplate(
+                        image_size="cover",
+                        columns=[
+                            CarouselColumn(
+                                thumbnail_image_url=f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}",
+                                title=mentor.NAME,
+                                text=mentor.DESCRIPTION,
+                                actions=[
+                                    MessageAction(
+                                        label="選択",
+                                        text=str(mentor_id)
+                                    )
+                                ]
+                            ) for mentor_id, mentor in MENTORS.items() if mentor_id > 0]
+                    )
                 ))
                 # 状態を更新
                 saved_data.state = STATUS.SELECT_MENTOR.name

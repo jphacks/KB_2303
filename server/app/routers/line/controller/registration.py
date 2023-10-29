@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from linebot.v3.messaging import (
     TextMessage,
-    TemplateMessage, ButtonsTemplate, MessageAction
+    TemplateMessage, ButtonsTemplate, MessageAction, ConfirmTemplate, CarouselTemplate, CarouselColumn
 )
 
 from crud.schemas import LINECommunicationStateSchema
@@ -84,7 +84,7 @@ def registration_controller(
                 )
                 reply_message_list.append(TemplateMessage(
                     alt_text=message,
-                    template=ButtonsTemplate(
+                    template=ConfirmTemplate(
                         text=message,
                         actions=[
                             MessageAction(
@@ -107,10 +107,23 @@ def registration_controller(
         elif saved_status == STATUS.CONFIRM_GROUP_JOIN:
             # 参加する場合
             if input_text == "はい":
-                # 氏名を聞く
-                reply_message_list.append(TextMessage(
-                    text=mentor.RESPONSE_ASK_MENTOR)
-                )
+                # メンターを聞く
+                reply_message_list.append(CarouselTemplate(
+                    image_size="cover",
+                    columns=[
+                        CarouselColumn(
+                            thumbnail_image_url=f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}",
+                            title=mentor.NAME,
+                            text=mentor.PROMPT,
+                            actions=[
+                                MessageAction(
+                                    label="選択",
+                                    text=str(mentor.ID)
+                                )
+                            ]
+                        ) for mentor in MENTORS[1:]
+                    ]
+                ))
                 # 状態を更新
                 saved_data.state = STATUS.SELECT_MENTOR.name
                 set_saved_data(line_id, saved_data)
@@ -238,15 +251,15 @@ def registration_controller(
                 )
                 reply_message_list.append(TemplateMessage(
                     alt_text=reply_text_build,
-                    template=ButtonsTemplate(
+                    template=ConfirmTemplate(
                         text=reply_text_build,
                         actions=[
                             MessageAction(
-                                label="確定する",
+                                label="確定",
                                 text="確定する"
                             ),
                             MessageAction(
-                                label="修正する",
+                                label="修正",
                                 text="修正する"
                             )
                         ]
@@ -301,7 +314,7 @@ def registration_controller(
                 # 氏名の入力に戻るか確認
                 reply_message_list.append(TemplateMessage(
                     alt_text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
-                    template=ButtonsTemplate(
+                    template=ConfirmTemplate(
                         text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
                         actions=[
                             MessageAction(
@@ -309,8 +322,8 @@ def registration_controller(
                                 text="やり直す"
                             ),
                             MessageAction(
-                                label="前の画面にもどる",
-                                text="前の画面にもどる"
+                                label="やめる",
+                                text="やめる"
                             )
                         ]
                     )
@@ -334,7 +347,7 @@ def registration_controller(
                 saved_data.state = STATUS.INPUT_NAME.name
                 set_saved_data(line_id, saved_data)
 
-            elif input_text == "前の画面にもどる":
+            elif input_text == "やめる":
                 # 状態を代入
                 saved_data.state = STATUS.CONFIRM_REGISTRATION.name
 
@@ -345,15 +358,15 @@ def registration_controller(
                 )
                 reply_message_list.append(TemplateMessage(
                     alt_text=reply_text_build,
-                    template=ButtonsTemplate(
+                    template=ConfirmTemplate(
                         text=reply_text_build,
                         actions=[
                             MessageAction(
-                                label="確定する",
+                                label="確定",
                                 text="確定する"
                             ),
                             MessageAction(
-                                label="修正する",
+                                label="修正",
                                 text="修正する"
                             )
                         ]

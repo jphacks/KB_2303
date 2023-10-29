@@ -9,7 +9,7 @@ type Props = {
 }
 
 export const UserInfoPanel: React.FC<Props> = ({ user }) => {
-  const [select, setSelect] = useState<'report' | 'request'>('report')
+  const [select, setSelect] = useState<'レポート' | 'リクエスト'>('レポート')
   return (
     <Root>
       <AvaterCard
@@ -19,11 +19,11 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
         selects={[
           {
             title: 'report',
-            action: () => setSelect('report'),
+            action: () => setSelect('レポート'),
           },
           {
             title: 'request',
-            action: () => setSelect('request'),
+            action: () => setSelect('リクエスト'),
           },
         ]}
       />

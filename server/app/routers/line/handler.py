@@ -106,6 +106,7 @@ async def handle_callback(
 
         if input_text == "clearstate":
             delete_saved_data(line_id)
+            saved_data = None
             reply_message_list.append(TextMessage(
                 text="ステータスを削除しました")
             )
@@ -182,6 +183,9 @@ def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
+
+            print(mentor.NAME)
+            print(config.mentor_id)
 
             saved_data = get_saved_data(line_id)
 

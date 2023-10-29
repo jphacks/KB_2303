@@ -7,6 +7,8 @@ import styled from '@emotion/styled'
 import { Color } from './utils/Color'
 import { loginCheck } from './utils/api/loginCheck'
 import { GroupAdmin } from './models/GroupAdmin'
+import './App.css'
+
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))

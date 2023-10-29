@@ -1,17 +1,19 @@
 import { useNavigate } from 'react-router'
-import { Button } from '../../components/Button'
 import { signout } from '../../utils/api/signout'
-import { Root } from './Styles'
+import { Center, Hr, PanelWrapper, Root, UserListWrapper, Text } from './Styles'
 import { useEffect, useState } from 'react'
 import { fetchGroup } from '../../utils/api/fetchGroup'
 import { fetchGroupUsers } from '../../utils/api/fetchGroupUsers'
 import { Result } from 'result-type-ts'
 import { Group } from '../../models/Group'
 import { GroupUser } from '../../models/GroupUser'
+import { Navigater } from '../../components/Navigater'
+import { IllustImage } from '../../components/IllustImage'
 
 const Page: React.FC = () => {
   const navi = useNavigate()
 
+  const [userInfo, setUserInfo] = useState<GroupUser | null>(null)
   const [group, setGroup] = useState<Result<Group>>(Result.failure('INIT'))
   const [groupUsers, setGroupUsers] = useState<Result<GroupUser[]>>(
     Result.failure('INIT')
@@ -55,15 +57,39 @@ const Page: React.FC = () => {
     return <div>GROUP USERS GET FAILER</div>
   }
 
+  const navigations = [
+    {
+      icon: 'user',
+      action: () => console.log('user'),
+    },
+    {
+      icon: 'setting',
+      action: () => console.log('setting'),
+    },
+    {
+      icon: 'info',
+      action: () => console.log('info'),
+    },
+  ]
+
   return (
     <Root>
-      HOME
-      <Button
-        type={'Fill'}
-        color={'green'}
-        label={'SIGN OUT'}
-        onClick={signOut}
-      />
+      <Navigater navigations={navigations} />
+      <UserListWrapper></UserListWrapper>
+      <Hr />
+      <PanelWrapper>
+        {userInfo === null && (
+          <Center>
+            <IllustImage type={'EmptyInfo'} />
+            <Text>受講者の情報が確認できます</Text>
+          </Center>
+        )}
+        {userInfo !== null && (
+          <Center>
+            <Text>受講者の情報をここに表示</Text>
+          </Center>
+        )}
+      </PanelWrapper>
     </Root>
   )
 }

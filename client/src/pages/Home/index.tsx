@@ -84,7 +84,9 @@ const Page: React.FC = () => {
 
   return (
     <Root>
-      <Navigater navigations={navigations} />
+      <div style={{ position: 'fixed', top: 0, left: 0 }}>
+        <Navigater navigations={navigations} />
+      </div>
       <UserListWrapper>
         <UserList
           userListViewInfo={userListViewInfo}

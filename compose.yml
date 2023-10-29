@@ -28,6 +28,15 @@ services:
       - ./client/dist:/var/www
     depends_on:
       - server
+  test:
+    image: nginx
+    ports:
+      - 127.0.0.1:80:80
+    volumes:
+      - ./dockerfiles/test/:/etc/nginx/conf.d/
+      - ./client/dist:/var/www
+    depends_on:
+      - server
 
   server:
     container_name: server

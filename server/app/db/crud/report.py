@@ -20,3 +20,10 @@ def get_need_to_process_scheduled_reports(db: Session) -> list[models.Report]:
         return []
 
     return res
+
+
+def update(db: Session, report: models.Report):
+    db.add(report)
+    db.commit()
+    db.refresh(report)
+    return report

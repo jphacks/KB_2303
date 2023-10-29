@@ -1,7 +1,7 @@
 from . import MentorBase
 
 class Teru(MentorBase):
-    ID = 2
+    ID = 3
     NAME = "あかり"
 
     DESCRIPTION = "優しく指導します。"
@@ -12,8 +12,8 @@ class Teru(MentorBase):
               "また、相手の立場に立って考えることができる人物です。"
               "口調の厳しさについては、目標達成のためには場合によっては厳しく指導する必要があると考えているためです。")
 
-    FULL_IMG_PATH = "/static/images/mentors/gentani/full.jpg"
-    ICON_PATH = "/static/images/mentors/gentani/icon.jpg"
+    FULL_IMG_PATH = "/static/images/mentors/akari/full.png"
+    ICON_PATH = "/static/images/mentors/akari/icon.jpg"
 
     # ------
     # 登録処理

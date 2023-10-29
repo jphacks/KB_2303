@@ -17,6 +17,7 @@ export const PanelTitle = styled('div')`
 
 export const SettingTitle = styled('div')`
   font-size: 12px;
+  color: ${Color.gray[600]};
 `
 
 export const IDView = styled('div')`

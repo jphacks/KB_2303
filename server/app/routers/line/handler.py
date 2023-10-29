@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import Request, APIRouter, HTTPException, Depends
@@ -139,11 +140,27 @@ async def handle_callback(
             # メンター取得
             mentor: MentorBase = MENTORS[user.config.mentor_id]
 
-            if saved_data is None:
+            if input_text == "メンタリング":
+                # ScheduleReportを作成
+                report = user_crud.get_last_report(db, user, is_scheduled=True)
+
+                if report is None:
+                    reply_message_list.append(TextMessage(
+                        text="不明なエラーが発生しました"
+                    ))
+                else:
+                    report.scheduled_hearing_date = datetime.now()
+                    report_crud.update(db, report)
+                    reply_message_list.append(TextMessage(
+                        text="準備が整うまでしばらくお待ち下さい...."
+                    ))
+
+            elif saved_data is None:
                 # 通常の会話
                 reply_message_list.append(TextMessage(
                     text=mentor.RESPONSE_INACTIVE
                 ))
+
             else:
                 # メンタリング会話
                 reply_message_list.extend(mentoring_controller(
@@ -157,7 +174,7 @@ async def handle_callback(
 
         # reply_message_listの全てにsenderを設定
         sender = Sender(
-            name=mentor.NAME
+            name=f"{mentor.NAME}メンター"
         )
         if mentor.ICON_PATH is not None:
             sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"

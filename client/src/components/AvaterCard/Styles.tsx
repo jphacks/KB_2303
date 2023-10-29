@@ -50,5 +50,5 @@ export const Text = styled('div')<{ isBold: boolean }>`
   font-size: 24px;
   margin-left: 24px;
   color: ${Color.gray[900]};
-  font-weight: ${({ isBold }) => (isBold ? 'Regular' : 'Bold')};
+  font-weight: ${({ isBold }) => (isBold ? 'Bold' : 'Regular')};
 `

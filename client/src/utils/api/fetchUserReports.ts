@@ -3,12 +3,12 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const fetchUserReports = async (id: number) => {
+export const fetchUserReports = async (id: string) => {
   await sleep(100)
   const report: Report = {
     target: 'target',
     scheduled_hearing_date: new Date(),
-    id: 'id',
+    id: id,
     user_id: 'user_id',
     no: 1,
     emotion_score: 0.2,

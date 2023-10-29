@@ -93,7 +93,7 @@ const Page: React.FC = () => {
       </UserListWrapper>
       <Hr />
       <PanelWrapper>
-        {panelType === 'setting' && <SettingPanel />}
+        {panelType === 'setting' && <SettingPanel groupId={group.value.user_invite_token} inviteId={group.value.admin_invite_token}/>}
         {panelType === 'info' && <InfoPanel />}
 
         {panelType === 'users' && userInfo === null && (

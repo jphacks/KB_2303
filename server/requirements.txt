@@ -6,3 +6,4 @@ sqlalchemy==2.0.22
 alembic==1.12.1
 psycopg2==2.9.9
 apscheduler==3.10.4
+openai==0.28.1

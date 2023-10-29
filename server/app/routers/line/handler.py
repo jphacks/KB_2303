@@ -26,6 +26,7 @@ from crud.schemas import LINECommunicationStateSchema
 from db.connection import SessionLocal
 from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
+from util.gptclient import gptchat
 from .controller.registration import registration_controller
 from .data import MENTORS
 from .model.state import STATUS
@@ -134,9 +135,30 @@ async def handle_callback(
 
         # 登録済みユーザ
         else:
-            reply_message_list.append(TextMessage(
-                text="登録済みユーザです")
-            )
+            # メンター取得
+            mentor = MENTORS[user.config.mentor_id]
+            if input_text == "test":
+                chatgpt_response = gptchat(
+                    text="\n".join([
+                        "あなたは、以下の特徴を持つ上司として一人の部下の学習進捗を確認してください。",
+                        f"特徴: {mentor.PROMPT}",
+                        "",
+                        "学習者の定期報告を提出するように求めたところ、以下の返答が得られました。",
+                        "「今週は学習時間は予定よりも多く確保できましたが、いくつか理解が詰まってしまった部分があり、進捗は遅れてしまいました。」",
+                        "",
+                        "この学習者の返答に対して、学習者を褒め、問題点を指摘して、改善のためのアイデアを提供できるよう、適切な返答を行ってください。",
+                        "",
+                        "ただしあなたは教育係の代理の窓口なので、何らかの個別対応をするときは約束はせずにメッセージを担当者に取り次ぎます。",
+                        "文字数は150文字以内で、学習者に伝えるメッセージだけを出力してください。"
+                    ])
+                )
+                reply_message_list.append(TextMessage(
+                    text=chatgpt_response
+                ))
+            else:
+                reply_message_list.append(TextMessage(
+                    text="登録済みユーザです")
+                )
 
         # reply_message_listを送信
         await async_msg_api.reply_message(

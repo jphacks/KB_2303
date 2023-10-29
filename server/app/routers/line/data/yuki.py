@@ -1,8 +1,8 @@
 from . import MentorBase
 
 
-class Gentani(MentorBase):
-    ID = 1
+class Yuki(MentorBase):
+    ID = 2
     NAME = "優木"
 
     DESCRIPTION = "優しく、明るい指導を心がけています！"

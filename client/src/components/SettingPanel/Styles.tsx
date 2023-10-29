@@ -10,8 +10,9 @@ export const Root = styled('div')`
 
 export const PanelTitle = styled('div')`
   font-size: 28px;
-  font-weight: boald;
+  font-weight: bold;
   margin-bottom: 20px;
+  margin-top: 15px;
 `
 
 export const SettingTitle = styled('div')`

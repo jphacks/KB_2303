@@ -139,9 +139,6 @@ async def handle_callback(
             # メンター取得
             mentor: MentorBase = MENTORS[user.config.mentor_id]
 
-            print(mentor.NAME)
-            print(user.config.mentor_id)
-
             if saved_data is None:
                 # 通常の会話
                 reply_message_list.append(TextMessage(
@@ -186,9 +183,6 @@ def send_mentoring_start_messages():
             line_id = user.line_id
             config = user.config
             mentor = MENTORS[config.mentor_id]
-
-            print(mentor.NAME)
-            print(config.mentor_id)
 
             saved_data = get_saved_data(line_id)
 

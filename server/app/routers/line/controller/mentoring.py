@@ -19,7 +19,7 @@ from ..data.base import MentorBase
 def confirm_data(saved_data: LINECommunicationStateSchema):
     return "\n".join(list(map(str, [
         f'次回までの目標:',
-        saved_data.data["next_target"]
+        saved_data.data["target"]
     ])))
 
 

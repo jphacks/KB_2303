@@ -50,7 +50,7 @@ const Page: React.FC = () => {
   if (group.isFailure) {
     return <div>GROUP GET FAILER</div>
   }
-  if (groupUsers.isFailure || !!groupUsers.value) {
+  if (groupUsers.isFailure || !groupUsers.value) {
     return <div>GROUP USERS GET FAILER</div>
   }
 

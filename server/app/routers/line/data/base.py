@@ -9,7 +9,7 @@ class MentorBase:
 
     PROMPT = None
 
-    IMG_DOMAIN = os.getenv("DOMAIN", "http://api.thiscode.proj.ukwhatn.com")
+    IMG_DOMAIN = os.getenv("DOMAIN", "https://api.thiscode.proj.ukwhatn.com")
 
     FULL_IMG_PATH = None
     ICON_PATH = None

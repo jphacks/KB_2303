@@ -13,7 +13,7 @@ from linebot.v3.messaging import (
     MessagingApi,
     Configuration,
     TextMessage,
-    ReplyMessageRequest, PushMessageRequest
+    ReplyMessageRequest, PushMessageRequest, Sender
 )
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.webhooks import (
@@ -26,7 +26,7 @@ from crud.schemas import LINECommunicationStateSchema
 from db.connection import SessionLocal
 from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
-from util.gptclient import gptchat
+from .controller.mentoring import mentoring_controller
 from .controller.registration import registration_controller
 from .data import MENTORS
 from .model.state import STATUS
@@ -137,34 +137,38 @@ async def handle_callback(
         else:
             # メンター取得
             mentor = MENTORS[user.config.mentor_id]
-            if input_text == "test":
-                chatgpt_response = gptchat(
-                    text="\n".join([
-                        "あなたは、以下の特徴を持つ上司として一人の部下の学習進捗を確認してください。",
-                        f"特徴: {mentor.PROMPT}",
-                        "",
-                        "学習者の定期報告を提出するように求めたところ、以下の返答が得られました。",
-                        "「今週は学習時間は予定よりも多く確保できましたが、いくつか理解が詰まってしまった部分があり、進捗は遅れてしまいました。」",
-                        "",
-                        "この学習者の返答に対して、学習者を褒め、問題点を指摘して、改善のためのアイデアを提供できるよう、適切な返答を行ってください。",
-                        "",
-                        "ただしあなたは教育係の代理の窓口なので、何らかの個別対応をするときは約束はせずにメッセージを担当者に取り次ぎます。",
-                        "文字数は150文字以内で、学習者に伝えるメッセージだけを、鉤括弧等を含めずに出力してください。なお、新たな問いかけを行うことは禁じます。"
-                    ])
-                )
+
+            if saved_data is None:
+                # 通常の会話
                 reply_message_list.append(TextMessage(
-                    text=chatgpt_response
+                    text=mentor.RESPONSE_INACTIVE
                 ))
             else:
-                reply_message_list.append(TextMessage(
-                    text="登録済みユーザです")
-                )
+                # メンタリング会話
+                reply_message_list.extend(mentoring_controller(
+                    saved_data=saved_data,
+                    line_id=line_id,
+                    input_text=input_text,
+                    mentor=mentor,
+                    user=user,
+                    db=db
+                ))
+
+        # reply_message_listの全てにsenderを設定
+        sender = Sender(
+            name=mentor.name
+        )
+        if mentor.ICON_PATH is not None:
+            sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"
+
+        for reply_message in reply_message_list:
+            reply_message.sender = sender
 
         # reply_message_listを送信
         await async_msg_api.reply_message(
             ReplyMessageRequest(
                 reply_token=ev.reply_token,
-                messages=reply_message_list
+                messages=reply_message_list,
             )
         )
 

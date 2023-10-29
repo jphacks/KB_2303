@@ -21,3 +21,16 @@ export const Text = styled('div')`
   font-size: 16px;
   color: ${Color.gray[900]};
 `
+
+export const Wrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 40px;
+`
+
+export const Hr = styled('div')`
+  width: 100%;
+  height: 1px;
+  background: ${Color.gray[300]};
+`

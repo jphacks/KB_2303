@@ -15,7 +15,7 @@ export const fetchUserReports = async (id: string) => {
     emotion_magnitude: 0.6,
     impression: 'impression',
     impression_feedback: 'impression_feedback',
-    archived_score: 100,
+    achieved_score: 100,
     reason: 'reason',
     reason_feedback: 'reason_feedback',
     problem: 'problem',

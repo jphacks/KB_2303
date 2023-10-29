@@ -6,6 +6,9 @@ export const Root = styled('div')`
   height: 100vh;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
 `
 
 export const UserListWrapper = styled('div')`
@@ -15,6 +18,7 @@ export const UserListWrapper = styled('div')`
 export const PanelWrapper = styled('div')`
   flex-grow: 1;
   height: 100vh;
+  overflow: scroll;
 `
 export const Hr = styled('div')`
   width: 1px;

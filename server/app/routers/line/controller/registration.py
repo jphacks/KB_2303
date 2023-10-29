@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from linebot.v3.messaging import (
     TextMessage,
-    TemplateMessage, ButtonsTemplate, MessageAction, ConfirmTemplate, CarouselTemplate, CarouselColumn
+    TemplateMessage, ButtonsTemplate, MessageAction, ConfirmTemplate, CarouselTemplate, CarouselColumn, Sender
 )
 
 from crud.schemas import LINECommunicationStateSchema
@@ -162,13 +162,22 @@ def registration_controller(
             else:
                 mentor = MENTORS[int(input_text)]
 
+                sender = Sender(
+                    name=mentor.NAME
+                )
+
+                if mentor.ICON_PATH is not None:
+                    sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"
+
                 # 挨拶
                 reply_message_list.append(TextMessage(
-                    text=mentor.RESPONSE_GREETING
+                    text=mentor.RESPONSE_GREETING,
+                    sender=sender
                 ))
                 # 氏名を聞く
                 reply_message_list.append(TextMessage(
-                    text=mentor.RESPONSE_ASK_NAME
+                    text=mentor.RESPONSE_ASK_NAME,
+                    sender=sender
                 ))
                 # 状態を更新
                 saved_data.state = STATUS.INPUT_NAME.name

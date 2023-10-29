@@ -48,12 +48,13 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
       ) : (
         <Wrapper>
           {reports.map((r, i) => {
-            if (i === 0) {
+            if (i === reports.length - 1) {
               return (
-                <>
-                  <ReportView report={r} ownerName={user.name} prevTarget="-" />
-                  <Hr />
-                </>
+                <ReportView
+                  report={r}
+                  ownerName={user.name}
+                  prevTarget={reports[i + 1].target}
+                />
               )
             } else {
               return (
@@ -61,9 +62,9 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
                   <ReportView
                     report={r}
                     ownerName={user.name}
-                    prevTarget={reports[i - 1].target}
+                    prevTarget={r.target}
                   />
-                  {i !== reports.length && <Hr />}
+                  <Hr />
                 </>
               )
             }

@@ -2,6 +2,7 @@ import React from 'react'
 import { Label, Root, Text } from './Styles'
 import { Report } from '../../models/Report'
 import { AchievementMeter } from '../AchievementMeter'
+import { Title } from '../UserInfoPanel/Styles'
 
 type Props = {
   ownerName: string
@@ -16,9 +17,9 @@ export const ReportView: React.FC<Props> = ({
 }) => {
   return (
     <Root>
-      <Text>
+      <Title>
         {ownerName}さん第{report.no}回レポート
-      </Text>
+      </Title>
       <Label>
         {report.achieved_score && (
           <AchievementMeter par={report.achieved_score} />
@@ -26,7 +27,7 @@ export const ReportView: React.FC<Props> = ({
       </Label>
       <div>
         <Label>前回の目標</Label>
-        <Text>{prevTarget}</Text>
+        <Text>{report.target}</Text>
       </div>
       <div>
         <Label>所感</Label>
@@ -42,7 +43,7 @@ export const ReportView: React.FC<Props> = ({
       </div>
       <div>
         <Label>次の目標</Label>
-        <Text>{report.target}</Text>
+        <Text>{prevTarget}</Text>
       </div>
     </Root>
   )

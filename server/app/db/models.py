@@ -78,7 +78,7 @@ class UserConfig(Base):
 
     interval_days = Column(Integer, nullable=False)
     mentor_id = Column(Integer, nullable=False)
-    goal = Column(String, nullable=False, default="")
+    goal = Column(String, nullable=True, default="")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)

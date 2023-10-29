@@ -28,7 +28,7 @@ from db.crud import user as user_crud, report as report_crud
 from db.session import get_db
 from .controller.mentoring import mentoring_controller
 from .controller.registration import registration_controller
-from .data import MENTORS
+from .data import MENTORS, MentorBase
 from .model.state import STATUS
 from .util.session import get_saved_data, delete_saved_data, set_saved_data
 
@@ -136,7 +136,7 @@ async def handle_callback(
         # 登録済みユーザ
         else:
             # メンター取得
-            mentor = MENTORS[user.config.mentor_id]
+            mentor: MentorBase = MENTORS[user.config.mentor_id]
 
             if saved_data is None:
                 # 通常の会話
@@ -156,7 +156,7 @@ async def handle_callback(
 
         # reply_message_listの全てにsenderを設定
         sender = Sender(
-            name=mentor.name
+            name=mentor.NAME
         )
         if mentor.ICON_PATH is not None:
             sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"
@@ -185,16 +185,24 @@ def send_mentoring_start_messages():
 
             saved_data = get_saved_data(line_id)
 
+            sender = Sender(
+                name=mentor.NAME
+            )
+            if mentor.ICON_PATH is not None:
+                sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"
+
             if saved_data is None:
                 msg_api.push_message(
                     PushMessageRequest(
                         to=line_id,
                         messages=[
                             TextMessage(
-                                text=mentor.RESPONSE_PUSH_START
+                                text=mentor.RESPONSE_PUSH_START,
+                                sender=sender
                             ),
                             TextMessage(
-                                text=mentor.RESPONSE_PUSH_HEARING
+                                text=mentor.RESPONSE_PUSH_HEARING,
+                                sender=sender
                             )
                         ]
                     )

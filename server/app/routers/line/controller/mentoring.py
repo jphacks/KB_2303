@@ -270,6 +270,15 @@ def mentoring_controller(
             # 状態更新
             saved_data.state = STATUS.INPUT_IMPRESSION.name
             set_saved_data(line_id, saved_data)
+        elif input_text == "いいえ":
+            # 次回の目標をヒアリング
+            reply_message_list.append(TextMessage(
+                text=mentor.RESPONSE_ASK_NEXT_TARGET
+            ))
+
+            # 次回の目標を聞く状態に遷移
+            saved_data.state = STATUS.INPUT_NEXT_TARGET.name
+            set_saved_data(line_id, saved_data)
 
         else:
             # 状態更新

@@ -139,6 +139,9 @@ async def handle_callback(
             # メンター取得
             mentor: MentorBase = MENTORS[user.config.mentor_id]
 
+            print(mentor.NAME)
+            print(user.config.mentor_id)
+
             if saved_data is None:
                 # 通常の会話
                 reply_message_list.append(TextMessage(

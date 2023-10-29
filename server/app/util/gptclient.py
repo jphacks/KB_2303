@@ -1,6 +1,6 @@
 import openai
 
-from env import get_env
+from .env import get_env
 
 
 def gptclient(json=None, text=None):

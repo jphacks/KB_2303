@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Root } from './Styles'
+import { Center, Root } from './Styles'
 import { GroupUser } from '../../models/GroupUser'
 import { AvaterCard } from '../AvaterCard'
+import { IllustImage } from '../IllustImage'
 
 type Props = {
   user: GroupUser
@@ -26,6 +27,9 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
           },
         ]}
       />
+      <Center>
+        <IllustImage type={'EmptyInfo'} />
+      </Center>
     </Root>
   )
 }

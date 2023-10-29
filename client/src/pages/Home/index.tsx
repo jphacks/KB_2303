@@ -40,7 +40,7 @@ const Page: React.FC = () => {
         return {
           id: u.id,
           name: u.name,
-          joined_at: u.joined_at,
+          joined_at: new Date(u.joined_at),
         }
       })
       setGroupUsers(Result.success(d))
@@ -50,7 +50,7 @@ const Page: React.FC = () => {
   if (group.isFailure) {
     return <div>GROUP GET FAILER</div>
   }
-  if (groupUsers.isFailure || !groupUsers.value) {
+  if (groupUsers.isFailure) {
     return <div>GROUP USERS GET FAILER</div>
   }
 

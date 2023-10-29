@@ -5,6 +5,7 @@ export const Root = styled('div')`
   display: flex;
   gap: 40px
   align-items: center;
+  margin: 24px
 `
 
 export const Center = styled('div')`

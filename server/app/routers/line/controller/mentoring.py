@@ -101,6 +101,10 @@ def mentoring_controller(
                 text=mentor.RESPONSE_HIGH_ACHIEVED_SCORE
             ))
 
+        # 状態更新
+        saved_data.state = STATUS.INPUT_REASON.name
+        set_saved_data(line_id, saved_data)
+
     # 理由を聞いていた場合
     elif saved_status == STATUS.INPUT_REASON:
         # 理由を保存
@@ -121,6 +125,9 @@ def mentoring_controller(
                 "この学習者の返答に対して、学習者を褒め、問題点を指摘して、改善のためのアイデアを提供できるよう、適切な返答を行ってください。",
                 "",
                 f"なお、この学習者は「{user.config.goal}」を最終的な目標としています。",
+                ""
+                f"また、この学習者は直近の数日間を振り返って{saved_data.data['impression']}と答え、"
+                f"あなたはそれに{saved_data.data['impression_feedback']}と答えました。"
                 "",
                 "文字数は150文字以内で、学習者に伝えるメッセージだけを、鉤括弧等を含めずに出力してください。なお、新たな問いかけを行うことは禁じます。"
             ])
@@ -157,6 +164,13 @@ def mentoring_controller(
                 "この学習者の返答に対して、学習者を褒め、問題点を指摘して、改善のためのアイデアを提供できるよう、適切な返答を行ってください。",
                 "",
                 f"なお、この学習者は「{user.config.goal}」を最終的な目標としています。",
+                ""
+                f"また、この学習者は直近の数日間を振り返って{saved_data.data['impression']}と答え、"
+                f"あなたはそれに{saved_data.data['impression_feedback']}と答えました。",
+                ""
+                f"更に、この学習者はこの定期報告までに達成すべき目標であった「{report.target}」をどの程度達成したかについて尋ねたところ、{saved_data.data['achieved_score']}%程度であると答えました。",
+                "次に、この達成度を答えた理由について尋ねたところ、以下の返答が得られています。",
+                f"「{saved_data.data['reason']}」",
                 "",
                 "文字数は150文字以内で、学習者に伝えるメッセージだけを、鉤括弧等を含めずに出力してください。なお、新たな問いかけを行うことは禁じます。"
             ])

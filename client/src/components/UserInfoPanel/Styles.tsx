@@ -26,6 +26,7 @@ export const Wrapper = styled('div')`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-left: 40px;
 `
 
 export const Hr = styled('div')`

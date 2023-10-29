@@ -62,7 +62,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
               )
             }
           })}
-          {reports.map((r, i) => {
+          {reports.map((_, i) => {
             if (i === reports.length) {
               return null
             } else {

@@ -15,4 +15,10 @@ class STATUS(Enum):
     CONFIRM_RETURN_TO_INPUT_NAME = 10702  # 氏名の入力に戻るか確認
 
     # 2xxxx: 定期メンタリング
-    INPUT_FEELING = 20101  # メンタリング開始・所感ヒアリング
+    INPUT_IMPRESSION = 20101  # メンタリング開始・所感ヒアリング
+    INPUT_ACHIEVED_SCORE = 20201  # 達成度を聞く
+    INPUT_REASON = 20301  # 達成度の理由を聞く
+    INPUT_PROBLEM = 20401  # 困りごとを聞く
+    INPUT_HELP_REQUIRED = 20501  # ヘルプ要請を聞く
+    INPUT_NEXT_TARGET = 20601  # 次回の目標を聞く
+    CONFIRM_NEXT_TARGET = 20701  # 次回の目標を確認

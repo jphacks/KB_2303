@@ -17,8 +17,9 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
   const [reports, setReports] = useState<Report[]>([])
 
   useEffect(() => {
+    console.log('fetch user', user.id)
     fetchUsers(user.id).then((data) => {
-      console.log({ data })
+      console.log('user', data)
       setReports(data.reports)
     })
   }, [])

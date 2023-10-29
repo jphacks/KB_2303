@@ -163,7 +163,8 @@ async def handle_callback(
             sender.icon_url = f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}"
 
         for reply_message in reply_message_list:
-            reply_message.sender = sender
+            if reply_message.sender is None:
+                reply_message.sender = sender
 
         # reply_message_listを送信
         await async_msg_api.reply_message(

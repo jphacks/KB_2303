@@ -27,7 +27,7 @@ export const ReportView: React.FC<Props> = ({
       </Label>
       <div>
         <Label>前回の目標</Label>
-        <Text>{report.target}</Text>
+        <Text>{prevTarget}</Text>
       </div>
       <div>
         <Label>所感</Label>
@@ -43,7 +43,7 @@ export const ReportView: React.FC<Props> = ({
       </div>
       <div>
         <Label>次の目標</Label>
-        <Text>{prevTarget}</Text>
+        <Text>{report.target}</Text>
       </div>
     </Root>
   )

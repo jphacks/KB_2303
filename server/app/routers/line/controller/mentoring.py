@@ -10,7 +10,7 @@ from db.crud import report as report_crud, user as user_crud
 from db.schemas import ScheduledReport
 from routers.line.model.state import STATUS
 from routers.line.util.session import (
-    set_saved_data
+    set_saved_data, delete_saved_data
 )
 from util import gptclient
 from ..data.base import MentorBase
@@ -264,16 +264,16 @@ def mentoring_controller(
 
             # メッセージ送信
             reply_message_list.append(TextMessage(
-                text=mentor.RESPONSE_COMPLETE_REGISTRATION
+                text=mentor.RESPONSE_COMPLETE_MENTORING
             ))
 
-            # 状態更新
-            saved_data.state = STATUS.INPUT_IMPRESSION.name
-            set_saved_data(line_id, saved_data)
+            # 状態を削除
+            delete_saved_data(line_id)
+
         elif input_text == "いいえ":
             # 次回の目標をヒアリング
             reply_message_list.append(TextMessage(
-                text=mentor.RESPONSE_ASK_NEXT_TARGET
+                text=mentor.RESPONSE_ASK_NEXT_TARGET_AGAIN
             ))
 
             # 次回の目標を聞く状態に遷移
@@ -281,16 +281,9 @@ def mentoring_controller(
             set_saved_data(line_id, saved_data)
 
         else:
-            # 状態更新
-            saved_data.state = STATUS.INPUT_NEXT_TARGET.name
-            set_saved_data(line_id, saved_data)
-
-            # 確認メッセージを作成
+            # 状態を更新せず、ボタンからの選択を促す
             reply_message_list.append(TextMessage(
-                text=mentor.RESPONSE_CONFIRM_NEXT_TARGET.replace(
-                    "<<DATA>>",
-                    confirm_data(saved_data)
-                )
+                text=mentor.RESPONSE_REQUEST_SELECT
             ))
 
     return reply_message_list

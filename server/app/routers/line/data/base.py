@@ -77,6 +77,7 @@ class MentorBase:
 
     # 次回の目標ヒアリング
     RESPONSE_ASK_NEXT_TARGET = "それでは、次にお声がけするまでに達成したいことを具体的に教えてください！"
+    RESPONSE_ASK_NEXT_TARGET_AGAIN = "もう一度、次にお声がけするまでに達成したいことを具体的に教えてください！"
 
     # 次回の目標確認
     RESPONSE_CONFIRM_NEXT_TARGET = "以下の通り登録します！\n<<DATA>>"

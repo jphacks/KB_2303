@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Center, Root, Text } from './Styles'
 import { GroupUser } from '../../models/GroupUser'
 import { AvaterCard } from '../AvaterCard'
 import { IllustImage } from '../IllustImage'
+import { ReportView } from '../ReportView'
+import { Report } from '../../models/Report'
+import { fetchUsers } from '../../utils/api/fetchUser'
 
 type Props = {
   user: GroupUser
@@ -10,6 +13,15 @@ type Props = {
 
 export const UserInfoPanel: React.FC<Props> = ({ user }) => {
   const [select, setSelect] = useState<'レポート' | 'リクエスト'>('レポート')
+
+  const [reports, setReports] = useState<Report[]>([])
+
+  useEffect(() => {
+    fetchUsers(user.id).then((data) => {
+      console.log({ data })
+      setReports(data.reports)
+    })
+  }, [])
   return (
     <Root>
       <AvaterCard
@@ -27,10 +39,30 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
           },
         ]}
       />
-      <Center>
-        <IllustImage type={'EmptyInfo'} />
-        <Text>まだレポートがありません。</Text>
-      </Center>
+      {reports.length === 0 ? (
+        <Center>
+          <IllustImage type={'EmptyInfo'} />
+          <Text>まだレポートがありません。</Text>
+        </Center>
+      ) : (
+        <div>
+          {reports.map((r, i) => {
+            if (i === 0) {
+              return (
+                <ReportView report={r} ownerName={user.name} prevTarget="-" />
+              )
+            } else {
+              return (
+                <ReportView
+                  report={r}
+                  ownerName={user.name}
+                  prevTarget={reports[i - 1].target}
+                />
+              )
+            }
+          })}
+        </div>
+      )}
     </Root>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Center, Root, Text } from './Styles'
+import { Center, Hr, Root, Text, Wrapper } from './Styles'
 import { GroupUser } from '../../models/GroupUser'
 import { AvaterCard } from '../AvaterCard'
 import { IllustImage } from '../IllustImage'
@@ -46,7 +46,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
           <Text>まだレポートがありません。</Text>
         </Center>
       ) : (
-        <div>
+        <Wrapper>
           {reports.map((r, i) => {
             if (i === 0) {
               return (
@@ -62,7 +62,14 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
               )
             }
           })}
-        </div>
+          {reports.map((r, i) => {
+            if (i === reports.length) {
+              return null
+            } else {
+              return <Hr />
+            }
+          })}
+        </Wrapper>
       )}
     </Root>
   )

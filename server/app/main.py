@@ -1,9 +1,11 @@
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from routers import root, sample, line
+from routers.api import main as api_main
+from routers.line import handler as line_handler
 from util.env import get_env
 
 # logger config
@@ -24,16 +26,29 @@ if env_mode == "production":
 # create app
 app = FastAPI(**app_params)
 
+origins = [
+    "http://client.thiscode.proj.ukwhatn.com",
+    "https://client.thiscode.proj.ukwhatn.com",
+    "http://localhost:8080",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # mount static folder
 app.mount("/static", StaticFiles(directory="/app/static"), name="static")
 
 # add routers
 app.include_router(
-    root.router
+    line_handler.router
 )
 app.include_router(
-    sample.router
-)
-app.include_router(
-    line.router
+    api_main.router,
+    prefix="/api"
 )

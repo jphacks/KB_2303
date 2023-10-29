@@ -13,7 +13,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
     <Root>
       <AvaterCard
         name={user.name}
-        createDate={user.joined_at.toString()}
+        createDate={user.joined_at.toLocaleDateString()}
         selected={select}
         selects={[
           {

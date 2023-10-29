@@ -9,13 +9,14 @@ import { Navigater } from '../../components/Navigater'
 import { IllustImage } from '../../components/IllustImage'
 import { SettingPanel } from '../../components/SettingPanel'
 import { InfoPanel } from '../../components/InfoPanel'
+import { UserList } from '../../components/UserList'
 
 const Page: React.FC = () => {
   const [panelType, setPanelType] = useState<'users' | 'setting' | 'info'>(
     'users'
   )
 
-  const [userInfo] = useState<GroupUser | null>(null)
+  const [userInfo, setUserInfo] = useState<GroupUser | null>(null)
   const [group, setGroup] = useState<Result<Group>>(Result.failure('INIT'))
   const [groupUsers, setGroupUsers] = useState<Result<GroupUser[]>>(
     Result.failure('INIT')
@@ -68,10 +69,25 @@ const Page: React.FC = () => {
     },
   ]
 
+  const userListViewInfo = groupUsers.value.map((u, i) => {
+    return {
+      name: u.name,
+      date: u.joined_at,
+      action: () => {
+        setUserInfo(groupUsers.value[i])
+      },
+    }
+  })
+
   return (
     <Root>
       <Navigater navigations={navigations} />
-      <UserListWrapper></UserListWrapper>
+      <UserListWrapper>
+        <UserList
+          userListViewInfo={userListViewInfo}
+          selectedItem={`${userInfo?.name}`}
+        />
+      </UserListWrapper>
       <Hr />
       <PanelWrapper>
         {panelType === 'setting' && <SettingPanel />}

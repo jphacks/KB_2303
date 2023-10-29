@@ -19,6 +19,7 @@ export const Default: Story = {
   args: {
     name: 'inatatsu',
     createDate: '2023/10/25~',
+    reportCount: 6,
     selected: 'レポート',
     selects: [
       { title: 'レポート', action: () => '' },

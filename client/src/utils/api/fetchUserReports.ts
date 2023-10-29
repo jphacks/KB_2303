@@ -10,6 +10,7 @@ export const fetchUserReports = async (id: number) => {
     scheduled_hearing_date: new Date(),
     id: 'id',
     user_id: 'user_id',
+    no: 1,
     emotion_score: 0.2,
     emotion_magnitude: 0.6,
     impression: 'impression',

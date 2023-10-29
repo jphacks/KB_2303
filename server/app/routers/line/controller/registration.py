@@ -121,8 +121,7 @@ def registration_controller(
                                     text=str(mentor.ID)
                                 )
                             ]
-                        ) for mentor in MENTORS[1:]
-                    ]
+                        ) for mentor_id, mentor in MENTORS.items() if mentor_id > 0]
                 ))
                 # 状態を更新
                 saved_data.state = STATUS.SELECT_MENTOR.name

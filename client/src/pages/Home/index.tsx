@@ -10,6 +10,7 @@ import { IllustImage } from '../../components/IllustImage'
 import { SettingPanel } from '../../components/SettingPanel'
 import { InfoPanel } from '../../components/InfoPanel'
 import { UserList } from '../../components/UserList'
+import { UserInfoPanel } from '../../components/UserInfoPanel'
 
 const Page: React.FC = () => {
   const [panelType, setPanelType] = useState<'users' | 'setting' | 'info'>(
@@ -103,9 +104,7 @@ const Page: React.FC = () => {
         )}
 
         {panelType === 'users' && userInfo !== null && (
-          <Center>
-            <Text>受講者の情報をここに表示</Text>
-          </Center>
+          <UserInfoPanel user={userInfo} />
         )}
       </PanelWrapper>
     </Root>

@@ -58,3 +58,15 @@ def get_reports(db: Session, user: models.User) -> list[models.Report]:
         return []
 
     return res
+
+
+def get_last_report(db: Session, user: models.User, is_scheduled: bool) -> models.Report | None:
+    res = db.query(models.Report).filter(models.Report.user_id == user.id).order_by(models.Report.no.desc()).first()
+
+    if res is None:
+        return None
+
+    if is_scheduled and res.hearing_date is not None:
+        return None
+
+    return res

@@ -1,45 +1,46 @@
 import React from 'react'
 import { useState } from 'react';
-import { IconView, NameView, Root, UserListView, UserView, DateView } from './Styles'
-import { Avater } from '../Avater';
+import {
+  IconView,
+  NameView,
+  Root,
+  UserListView,
+  UserView,
+  DateView,
+} from './Styles'
+import { Avater } from '../Avater'
 
 type Props = {
-  userListViewInfo:{
-    name:string;
-    date:Date;
-    action: () => void;
+  userListViewInfo: {
+    name: string
+    date: Date
+    action: () => void
   }[]
+  selectedItem: string
 }
 
-function convertDateToStr(date:Date){
+function convertDateToStr(date: Date) {
   return date.toLocaleDateString()
 }
 
-export const UserList: React.FC<Props> = ({userListViewInfo}) => {
-  const [onClick, setOnClick] = useState(0);
-	const [hover, setHover] = useState(0);
+export const UserList: React.FC<Props> = ({
+  userListViewInfo,
+  selectedItem,
+}) => {
   return (
-    <Root>
-      <UserListView>
-        {userListViewInfo.map((user) => {
-            const iconIndex = userListViewInfo.indexOf(user)+1;
-            const dateStr = convertDateToStr(user.date);
-            return(
-              <UserView 
-              key={user.name} 
-              onMouseEnter={() => setHover(iconIndex)} 
-              onMouseLeave={() => setHover(0)} 
-              onClick={() => {setHover(0), setOnClick(iconIndex), user.action()}}>
-                <IconView>
-                  <Avater name={user.name} size={24}></Avater>
-                </IconView>
-                <NameView>{user.name}</NameView>
-                <DateView>{dateStr}</DateView>
-              </UserView>
-            )
-          })}
-        <UserView></UserView>
-      </UserListView>
-    </Root>
+    <UserListView>
+      {userListViewInfo.map((user) => {
+        const dateStr = convertDateToStr(user.date)
+        return (
+          <UserView key={user.name} isSelected={user.name === selectedItem}>
+            <IconView>
+              <Avater name={user.name} size={24}></Avater>
+            </IconView>
+            <NameView>{user.name}</NameView>
+            <DateView>{dateStr}</DateView>
+          </UserView>
+        )
+      })}
+    </UserListView>
   )
 }

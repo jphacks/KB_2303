@@ -19,11 +19,23 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    userListViewInfo:[{
-      name:"いょむ",
-      date: new Date(),
-      action: () => console.log('いょむ clicked')
-    }]
-    
-  }
+    userListViewInfo: [
+      {
+        name: 'いょむ',
+        date: new Date(),
+        action: () => console.log('いょむ clicked'),
+      },
+      {
+        name: 'いなたつ',
+        date: new Date(),
+        action: () => console.log('いなたつ clicked'),
+      },
+      {
+        name: 'ukwhatn',
+        date: new Date(),
+        action: () => console.log('watanabe clicked'),
+      },
+    ],
+    selectedItem: 'いょむ',
+  },
 }

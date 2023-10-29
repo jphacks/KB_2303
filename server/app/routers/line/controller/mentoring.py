@@ -48,7 +48,7 @@ def mentoring_controller(
         set_saved_data(line_id, saved_data)
 
         # 所感に対する返答を作成
-        chatgpt_response = gptclient.gptclient(
+        chatgpt_response = gptclient.gptchat(
             text="\n".join([
                 "あなたは、以下の特徴を持つ上司として一人の部下の学習進捗を確認してください。",
                 f"特徴: {mentor.PROMPT}",
@@ -110,7 +110,7 @@ def mentoring_controller(
         set_saved_data(line_id, saved_data)
 
         # 理由に対する返答を作成
-        chatgpt_response = gptclient.gptclient(
+        chatgpt_response = gptclient.gptchat(
             text="\n".join([
                 "あなたは、以下の特徴を持つ上司として一人の部下の学習進捗を確認してください。",
                 f"特徴: {mentor.PROMPT}",
@@ -148,7 +148,7 @@ def mentoring_controller(
         set_saved_data(line_id, saved_data)
 
         # 困りごとに対する返答を作成
-        chatgpt_response = gptclient.gptclient(
+        chatgpt_response = gptclient.gptchat(
             text="\n".join([
                 "あなたは、以下の特徴を持つ上司として一人の部下の学習進捗を確認してください。",
                 f"特徴: {mentor.PROMPT}",

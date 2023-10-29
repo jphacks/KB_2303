@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Center, Root } from './Styles'
+import { Center, Root, Text } from './Styles'
 import { GroupUser } from '../../models/GroupUser'
 import { AvaterCard } from '../AvaterCard'
 import { IllustImage } from '../IllustImage'
@@ -29,6 +29,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
       />
       <Center>
         <IllustImage type={'EmptyInfo'} />
+        <Text>まだレポートがありません。</Text>
       </Center>
     </Root>
   )

@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 from linebot.v3.messaging import (
-    TextMessage
+    TextMessage,
+    TemplateMessage, MessageAction, ConfirmTemplate
 )
 
 from crud.schemas import LINECommunicationStateSchema
@@ -189,6 +190,22 @@ def mentoring_controller(
         reply_message_list.append(TextMessage(
             text=mentor.RESPONSE_ASK_HELP_REQUIRED
         ))
+        reply_message_list.append(TemplateMessage(
+            alt_text=mentor.RESPONSE_ASK_HELP_REQUIRED,
+            template=ConfirmTemplate(
+                text="選択してください",
+                actions=[
+                    MessageAction(
+                        label="はい",
+                        text="はい"
+                    ),
+                    MessageAction(
+                        label="いいえ",
+                        text="いいえ"
+                    )
+                ]
+            )
+        ))
 
     # 管理者への助けを求めるかを聞いていた場合
     elif saved_status == STATUS.INPUT_HELP_REQUIRED:
@@ -237,6 +254,22 @@ def mentoring_controller(
             # 確認メッセージを送信
             reply_message_list.append(TextMessage(
                 text=confirm_message
+            ))
+            reply_message_list.append(TemplateMessage(
+                alt_text=confirm_message,
+                template=ConfirmTemplate(
+                    text="選択してください",
+                    actions=[
+                        MessageAction(
+                            label="はい",
+                            text="はい"
+                        ),
+                        MessageAction(
+                            label="いいえ",
+                            text="いいえ"
+                        )
+                    ]
+                )
             ))
 
     # 次回の目標を確認していた場合

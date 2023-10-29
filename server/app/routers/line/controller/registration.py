@@ -82,10 +82,13 @@ def registration_controller(
                     mentor.RESPONSE_CONFIRM_GROUP_JOIN,
                     {"GROUP_NAME": group.name}
                 )
+                reply_message_list.append(TextMessage(
+                    text=message
+                ))
                 reply_message_list.append(TemplateMessage(
                     alt_text=message,
                     template=ConfirmTemplate(
-                        text=message,
+                        text="選択してください",
                         actions=[
                             MessageAction(
                                 label="はい",
@@ -108,8 +111,11 @@ def registration_controller(
             # 参加する場合
             if input_text == "はい":
                 # メンターを聞く
+                reply_message_list.append(TextMessage(
+                    text=mentor.RESPONSE_ASK_MENTOR)
+                )
                 reply_message_list.append(TemplateMessage(
-                    alt_text=mentor.RESPONSE_ASK_MENTOR,
+                    alt_text="選択してください",
                     template=CarouselTemplate(
                         image_size="cover",
                         columns=[
@@ -193,10 +199,14 @@ def registration_controller(
                 )
             else:
                 # メンタリングの頻度を聞く
+                reply_message_list.append(TextMessage(
+                    text=mentor.RESPONSE_ASK_INTERVAL
+                ))
+
                 reply_message_list.append(TemplateMessage(
-                    alt_text=mentor.RESPONSE_ASK_INTERVAL,
+                    alt_text="頻度を選択",
                     template=ButtonsTemplate(
-                        text=mentor.RESPONSE_ASK_INTERVAL,
+                        text="選択してください",
                         actions=[
                             MessageAction(
                                 label="毎日",
@@ -251,10 +261,13 @@ def registration_controller(
                     mentor.RESPONSE_CONFIRM_REGISTRATION,
                     {"DATA": confirm_data(saved_data)}
                 )
+                reply_message_list.append(TextMessage(
+                    text=reply_text_build
+                ))
                 reply_message_list.append(TemplateMessage(
-                    alt_text=reply_text_build,
+                    alt_text="確定確認",
                     template=ConfirmTemplate(
-                        text=reply_text_build,
+                        text="選択してください",
                         actions=[
                             MessageAction(
                                 label="確定",
@@ -314,10 +327,14 @@ def registration_controller(
                 )
             elif input_text == "修正する":
                 # 氏名の入力に戻るか確認
+                reply_message_list.append(TextMessage(
+                    text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME
+                ))
+
                 reply_message_list.append(TemplateMessage(
                     alt_text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
                     template=ConfirmTemplate(
-                        text=mentor.RESPONSE_CONFIRM_RETURN_TO_INPUT_NAME,
+                        text="選択してください",
                         actions=[
                             MessageAction(
                                 label="やり直す",
@@ -358,10 +375,13 @@ def registration_controller(
                     mentor.RESPONSE_CONFIRM_REGISTRATION,
                     {"DATA": confirm_data(saved_data)}
                 )
+                reply_message_list.append(TextMessage(
+                    text=reply_text_build
+                ))
                 reply_message_list.append(TemplateMessage(
-                    alt_text=reply_text_build,
+                    alt_text="確定確認",
                     template=ConfirmTemplate(
-                        text=reply_text_build,
+                        text="選択してください",
                         actions=[
                             MessageAction(
                                 label="確定",

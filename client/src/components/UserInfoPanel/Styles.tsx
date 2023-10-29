@@ -34,3 +34,8 @@ export const Hr = styled('div')`
   height: 1px;
   background: ${Color.gray[300]};
 `
+
+export const Title = styled('div')`
+  font-size: 24px;
+  color: ${Color.gray[900]};
+`

@@ -63,7 +63,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
                     ownerName={user.name}
                     prevTarget={reports[i - 1].target}
                   />
-                  {i !== reports.length && <Hr />}
+                  {i !== reports.length - 1 && <Hr />}
                 </>
               )
             }

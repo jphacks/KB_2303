@@ -77,8 +77,8 @@ class UserConfig(Base):
     user: Mapped["User"] = relationship("User", back_populates="config")
 
     interval_days = Column(Integer, nullable=False)
-
     mentor_id = Column(Integer, nullable=False)
+    goal = Column(String, nullable=False, default="")
 
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now(), nullable=False)

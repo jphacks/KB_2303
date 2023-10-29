@@ -196,7 +196,7 @@ def send_mentoring_start_messages():
                     )
                 )
                 set_saved_data(line_id, LINECommunicationStateSchema(
-                    state=STATUS.INPUT_FEELING.name,
+                    state=STATUS.INPUT_IMPRESSION.name,
                     data={
                         "report_id": report.id
                     }

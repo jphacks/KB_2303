@@ -58,7 +58,14 @@ class MentorBase:
     # ------
     # プッシュ時
     RESPONSE_PUSH_START = "こんにちは！本日のメンタリングを行わせていただきます！"
+    # 所感ヒアリング
     RESPONSE_PUSH_HEARING = "最近の様子を教えてください！（例: 調子が良かった、悪かった、など）"
+
+    # 達成度ヒアリング
+    RESPONSE_ASK_ACHIEVED_SCORE = "今週の目標はどの程度達成できましたか？0から100の間で入力してください！"
+    RESPONSE_LOW_ACHIEVED_SCORE = "達成度が低いようですね....\nなにか理由があれば教えてください！"
+    RESPONSE_MIDDLE_ACHIEVED_SCORE = "少し不満が残る結果のようですね....！\nなにか理由があれば教えてください！"
+    RESPONSE_HIGH_ACHIEVED_SCORE = "達成度が高いようですね！\nなにか理由があれば教えてください！"
 
     # -----
     # 共通

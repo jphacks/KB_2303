@@ -1,12 +1,19 @@
 import styled from '@emotion/styled'
+import { Color } from '../../utils/Color'
 
-export const TextField = styled('input')`
+export const TextField = styled('input')<{ isError: boolean }>`
   width: 200px;
   height: 32px;
-  border: 1px solid black;
-  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid
+    ${({ isError }) => (isError ? Color.red.main : Color.black)};
   padding: 4px;
   background: transparent;
+  outline: none;
+  &:focus {
+    border-bottom: 1px solid
+      ${({ isError }) => (isError ? Color.red.main : Color.green.main)};
+  }
 `
 export const Root = styled('div')`
   display: flex;
@@ -15,8 +22,7 @@ export const Root = styled('div')`
 `
 
 export const Label = styled('div')`
-  font-size: 12px;
-  margin-bottom: 8px;
+  font-size: 10px;
 `
 export const Error = styled('div')`
   font-size: 12px;

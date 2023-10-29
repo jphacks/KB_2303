@@ -24,14 +24,19 @@ def emotionscore(text):
     encoding_type = language_v1.EncodingType.UTF8
     response = client.analyze_sentiment(request={'document': document, 'encoding_type': encoding_type})
     # Get sentiment for all sentences in the document
+    #print(response)
     score = []
     magnitude = []
     for sentence in response.sentences:
         score.append(sentence.sentiment.score)
         magnitude.append(sentence.sentiment.magnitude)
-    return score, magnitude
-
-
+        
+    #print("score",score)
+    #print("magnitude",magnitude)
+    return  sum(score)/len(score),sum(magnitude)/len(magnitude)
+  
+  
+  
 if __name__ == "__main__":
-    emotion = emotionscore("今日は素晴らしく気分が悪いです。")
-    print(emotion)
+  emotion=emotionscore(input("テキストを入力してください: "))
+  print(emotion)

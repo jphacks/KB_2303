@@ -22,7 +22,6 @@ def gooclient_time(text):
   return None
   #print(response.json())
 #gooラボAPiを使って名前を抽出する
-
 #フルネームを文字列で返す。フルネームではない場合やそもそも名前が含まれていない場合はNoneを返す
 def gooclient_name(text):
   requesttext=text

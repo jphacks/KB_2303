@@ -6,6 +6,7 @@ type Props = {
   label: string
   value: string
   error?: string
+  type: 'text' | 'password'
   setValue: Dispatch<SetStateAction<string>>
 }
 
@@ -14,15 +15,17 @@ export const Input: React.FC<Props> = ({
   label,
   value,
   error = '',
+  type,
   setValue,
 }) => {
   return (
     <Root>
       <Label>{label}</Label>
       <TextField
-        type="text"
+        type={type}
         placeholder={placeHolder}
         value={value}
+        isError={error !== ''}
         onChange={(e) => setValue(e.target.value)}
       />
       {error !== '' && <Error>{error}</Error>}

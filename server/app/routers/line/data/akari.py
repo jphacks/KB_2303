@@ -1,6 +1,6 @@
 from . import MentorBase
 
-class Teru(MentorBase):
+class Akari(MentorBase):
     ID = 3
     NAME = "あかり"
 

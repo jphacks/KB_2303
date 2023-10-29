@@ -16,6 +16,7 @@ type Props = {
   name: string
   createDate: string
   selected: string
+  reportCount: number
   selects: {
     title: string
     action: () => void
@@ -25,6 +26,7 @@ type Props = {
 export const AvaterCard: React.FC<Props> = ({
   name,
   createDate,
+  reportCount,
   selects,
   selected,
 }) => {
@@ -35,7 +37,7 @@ export const AvaterCard: React.FC<Props> = ({
       </AvaterWrapper>
       <Name>{name}</Name>
       <Row>
-        <ReportTitle>{name}</ReportTitle>
+        <ReportTitle>レポート{reportCount}件</ReportTitle>
         <DateText>{createDate}</DateText>
       </Row>
       <Hr />

@@ -27,6 +27,7 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
     <Root>
       <AvaterCard
         name={user.name}
+        reportCount={reports.length}
         createDate={user.joined_at.toLocaleDateString()}
         selected={select}
         selects={[
@@ -50,23 +51,22 @@ export const UserInfoPanel: React.FC<Props> = ({ user }) => {
           {reports.map((r, i) => {
             if (i === 0) {
               return (
-                <ReportView report={r} ownerName={user.name} prevTarget="-" />
+                <>
+                  <ReportView report={r} ownerName={user.name} prevTarget="-" />
+                  <Hr />
+                </>
               )
             } else {
               return (
-                <ReportView
-                  report={r}
-                  ownerName={user.name}
-                  prevTarget={reports[i - 1].target}
-                />
+                <>
+                  <ReportView
+                    report={r}
+                    ownerName={user.name}
+                    prevTarget={reports[i - 1].target}
+                  />
+                  {i !== reports.length - 1 && <Hr />}
+                </>
               )
-            }
-          })}
-          {reports.map((_, i) => {
-            if (i === reports.length) {
-              return null
-            } else {
-              return <Hr />
             }
           })}
         </Wrapper>

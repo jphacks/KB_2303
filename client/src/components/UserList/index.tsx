@@ -32,7 +32,10 @@ export const UserList: React.FC<Props> = ({
       {userListViewInfo.map((user) => {
         const dateStr = convertDateToStr(user.date)
         return (
-          <UserView key={user.name} isSelected={user.name === selectedItem}>
+          <UserView
+            key={user.name}
+            isSelected={user.name === selectedItem}
+            onClick={user.action}>
             <IconView>
               <Avater name={user.name} size={24}></Avater>
             </IconView>

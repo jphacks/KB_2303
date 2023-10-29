@@ -121,7 +121,7 @@ def registration_controller(
                         columns=[
                             CarouselColumn(
                                 thumbnail_image_url=f"{mentor.IMG_DOMAIN}{mentor.ICON_PATH}",
-                                title=mentor.NAME,
+                                title=f"{mentor.NAME}メンター",
                                 text=mentor.DESCRIPTION,
                                 actions=[
                                     MessageAction(

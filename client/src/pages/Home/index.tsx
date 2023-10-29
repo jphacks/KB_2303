@@ -69,6 +69,8 @@ const Page: React.FC = () => {
     },
   ]
 
+  console.log('g', groupUsers.value)
+
   const userListViewInfo = groupUsers.value.map((u, i) => {
     return {
       name: u.name,

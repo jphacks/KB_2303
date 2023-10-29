@@ -21,7 +21,7 @@ def gptclient(json=None, text=None):
 
 # 返答をテキストとして返す
 def gptchat(json=None, text=None):
-    return gptclient(json, text).choices[0].message.content
+    return gptclient(json, text).choices[0].message.content.strip("「").strip("」")
 
 
 # 返答をそのままの構造で返す

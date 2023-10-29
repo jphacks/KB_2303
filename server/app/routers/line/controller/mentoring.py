@@ -45,7 +45,6 @@ def mentoring_controller(
         # 所感を保存
         saved_data.data["impression"] = input_text
         saved_data.state = STATUS.INPUT_ACHIEVED_SCORE.name
-        set_saved_data(line_id, saved_data)
 
         # 所感に対する返答を作成
         chatgpt_response = gptclient.gptchat(
@@ -66,6 +65,7 @@ def mentoring_controller(
 
         # 返答を保存
         saved_data.data["impression_feedback"] = chatgpt_response
+        set_saved_data(line_id, saved_data)
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response
@@ -135,6 +135,7 @@ def mentoring_controller(
 
         # 返答を保存
         saved_data.data["reason_feedback"] = chatgpt_response
+        set_saved_data(line_id, saved_data)
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response
@@ -178,6 +179,7 @@ def mentoring_controller(
 
         # 返答を保存
         saved_data.data["problem_feedback"] = chatgpt_response
+        set_saved_data(line_id, saved_data)
 
         reply_message_list.append(TextMessage(
             text=chatgpt_response

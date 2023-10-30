@@ -1,4 +1,4 @@
-# メンタリングサポートシステム　「てるみー」
+# メンタリング自動化アプリ　「てるみー」
 
 ![JPHACKS2023_KB2303](https://github.com/jphacks/KB_2303/assets/63051018/2d77cbc3-7d51-4009-a51d-dc7c0be2866e)
 
@@ -60,6 +60,23 @@ https://github.com/this-code-2023/this-code/assets/47080593/af478d7a-674c-48b5-9
 ![image](https://github.com/this-code-2023/this-code/assets/47080593/412b04e8-b9d7-4d65-b3ca-0f072a7b3689)
 
 <br>
+
+### アプリ試用方法
+#### 学習者として(LINE Bot)
+1. リンクにアクセスして「てるみー」を友だち登録<br>
+  https://lin.ee/su6VgzX
+2. 「てるみー」の案内にそってユーザー情報を登録<br>
+> **グループID：`a32273`**
+3. ユーザー情報の登録後、`メンタリング`と入力<br>
+  1～2分程度待機すると実際のメンタリングが始まります
+
+#### 管理者として(Webアプリ)
+1. リンクよりWebアプリにアクセス<br>
+  https://client.thiscode.proj.ukwhatn.com/
+2. 次の試用アカウントでサインイン
+> mail: `tellme@sample.com`<br>
+> password: `password`
+3. 管理者としての機能がご確認いただけます
 
 ### 特長
 

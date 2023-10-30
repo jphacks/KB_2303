@@ -38,7 +38,9 @@
 
 その後、学習者は管理者から受け取った招待コードを用い、LINE 上での登録を行います。
 
-https://github.com/this-code-2023/this-code/assets/47080593/3ce575fa-9334-4003-9372-834562502623
+
+https://github.com/jphacks/KB_2303/assets/47080593/524de95f-79c0-4ae6-8ae2-19152f861a31
+
 
 <br>
 
@@ -47,7 +49,11 @@ https://github.com/this-code-2023/this-code/assets/47080593/3ce575fa-9334-4003-9
 登録時に指定したメンタリング頻度に基づき、LINEBot からプッシュでの声掛けを実施します。<br>
 その質問に回答していくことで、定期的な進捗や課題点の振り返りを実施することができます。
 
-https://github.com/this-code-2023/this-code/assets/47080593/af478d7a-674c-48b5-9a87-bbb9c6da4211
+
+
+https://github.com/jphacks/KB_2303/assets/47080593/9636cec5-9953-461c-b41d-5f3c03a651c2
+
+
 
 <br>
 
@@ -57,7 +63,8 @@ https://github.com/this-code-2023/this-code/assets/47080593/af478d7a-674c-48b5-9
 
 ここでは、進捗率のグラフ表示のほか、各ヒアリング項目の閲覧が可能です。
 
-![image](https://github.com/this-code-2023/this-code/assets/47080593/412b04e8-b9d7-4d65-b3ca-0f072a7b3689)
+![image](https://github.com/jphacks/KB_2303/assets/47080593/5090fb6f-06b9-4920-ac58-47edaf6e7f3e)
+
 
 <br>
 
@@ -106,7 +113,8 @@ https://github.com/this-code-2023/this-code/assets/47080593/af478d7a-674c-48b5-9
 
 また、LINE Messaging API の機能を利用して、選択した AI メンターの名前・アイコンを動的に設定することで、より没入感を高めています。
 
-<img width="443" alt="image" src="https://github.com/this-code-2023/this-code/assets/47080593/8e763e23-b7a3-44c1-b892-73b884e5dab9">
+![image](https://github.com/jphacks/KB_2303/assets/47080593/e3fd63ed-5eb6-493b-95db-6117c2d0cfa9)
+
 
 <br>
 
@@ -153,7 +161,8 @@ https://github.com/this-code-2023/this-code/assets/47080593/af478d7a-674c-48b5-9
 
 ## 開発技術
 
-![image](https://github.com/this-code-2023/this-code/assets/37525169/1009c52c-75e9-42fe-8221-ca2266079d06)
+![image](https://github.com/jphacks/KB_2303/assets/47080593/018d6673-25b4-4618-8d47-a2ee6b66662b)
+
 
 <br>
 

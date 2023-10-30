@@ -1,6 +1,6 @@
 # メンタリングサポートシステム　「てるみー」
 
-![JPHACKS2023_KB2303](https://github.com/jphacks/KB_2303/assets/63051018/db79ee42-7202-4995-b256-61c8ff2819be)
+![JPHACKS2023_KB2303](https://github.com/jphacks/KB_2303/assets/63051018/2d77cbc3-7d51-4009-a51d-dc7c0be2866e)
 
 <br>
 
